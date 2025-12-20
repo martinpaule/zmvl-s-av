@@ -2,11 +2,17 @@ import { useState } from "react";
 import { X, Camera, FileImage, Folder } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-// Import gallery images
-import gallery01 from "@/assets/gallery-01.jpg";
-import gallery02 from "@/assets/gallery-02.jpg";
-import gallery03 from "@/assets/gallery-03.jpg";
-import gallery04 from "@/assets/gallery-04.jpg";
+// Import Myjava concert photos
+import myjava01 from "@/assets/myjava-01.jpg";
+import myjava02 from "@/assets/myjava-02.jpg";
+import myjava03 from "@/assets/myjava-03.jpg";
+import myjava04 from "@/assets/myjava-04.jpg";
+import myjava05 from "@/assets/myjava-05.jpg";
+import myjava06 from "@/assets/myjava-06.jpg";
+import myjava07 from "@/assets/myjava-07.jpg";
+import myjava08 from "@/assets/myjava-08.jpg";
+import myjava09 from "@/assets/myjava-09.jpg";
+import myjava10 from "@/assets/myjava-10.jpg";
 import article01 from "@/assets/article-01.jpg";
 import article02 from "@/assets/article-02.jpg";
 
@@ -48,27 +54,63 @@ const galleryData: Record<GalleryCategory, GalleryItem[]> = {
   photos: [
     {
       id: "photo-1",
-      src: gallery01,
-      alt: "Industrial performance with metal percussion",
-      caption: "Prievidza, 1991",
+      src: myjava01,
+      alt: "Myjava koncert 1",
+      caption: "Myjava",
     },
     {
       id: "photo-2",
-      src: gallery02,
-      alt: "Live show with dramatic lighting",
-      caption: "Bratislava, 1993",
+      src: myjava02,
+      alt: "Myjava koncert 2",
+      caption: "Myjava",
     },
     {
       id: "photo-3",
-      src: gallery03,
-      alt: "Band members with instruments",
-      caption: "Kopřivnice, 1995",
+      src: myjava03,
+      alt: "Myjava koncert 3",
+      caption: "Myjava",
     },
     {
       id: "photo-4",
-      src: gallery04,
-      alt: "Underground venue performance",
-      caption: "Brno, 1994",
+      src: myjava04,
+      alt: "Myjava koncert 4",
+      caption: "Myjava",
+    },
+    {
+      id: "photo-5",
+      src: myjava05,
+      alt: "Myjava koncert 5",
+      caption: "Myjava",
+    },
+    {
+      id: "photo-6",
+      src: myjava06,
+      alt: "Myjava koncert 6",
+      caption: "Myjava",
+    },
+    {
+      id: "photo-7",
+      src: myjava07,
+      alt: "Myjava koncert 7",
+      caption: "Myjava",
+    },
+    {
+      id: "photo-8",
+      src: myjava08,
+      alt: "Myjava koncert 8",
+      caption: "Myjava",
+    },
+    {
+      id: "photo-9",
+      src: myjava09,
+      alt: "Myjava koncert 9",
+      caption: "Myjava",
+    },
+    {
+      id: "photo-10",
+      src: myjava10,
+      alt: "Myjava koncert 10",
+      caption: "Myjava",
     },
   ],
   posters: [
