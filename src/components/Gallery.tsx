@@ -2,6 +2,11 @@ import { useState, useCallback, useMemo } from "react";
 import { X, Camera, FileImage, Folder, Shuffle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// Import other concert photos
+import podMostom from "@/assets/pod-mostom.jpg";
+import klacno1991 from "@/assets/klacno-1991.jpg";
+import povazskaBystrica from "@/assets/povazska-bystrica.jpg";
+
 // Import Prerov concert photos
 import prerov01 from "@/assets/prerov-01.jpg";
 import prerov02 from "@/assets/prerov-02.jpg";
@@ -68,6 +73,9 @@ type GalleryCategory = "photos" | "posters" | "other";
 
 const galleryData: Record<GalleryCategory, GalleryItem[]> = {
   photos: [
+    { id: "pod-mostom", src: podMostom, alt: "Pod mostom", caption: "Pod mostom" },
+    { id: "klacno-1991", src: klacno1991, alt: "Klačno sept 1991", caption: "Klačno 1991" },
+    { id: "povazska-bystrica", src: povazskaBystrica, alt: "Považská Bystrica", caption: "Považská Bystrica" },
     { id: "prerov-1", src: prerov01, alt: "Prerov koncert 1", caption: "Prerov" },
     { id: "prerov-2", src: prerov02, alt: "Prerov koncert 2", caption: "Prerov" },
     { id: "prerov-3", src: prerov03, alt: "Prerov koncert 3", caption: "Prerov" },

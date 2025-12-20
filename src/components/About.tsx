@@ -1,7 +1,7 @@
 import { bandInfo } from "@/data/bandInfo";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { MapPin, Calendar, Music } from "lucide-react";
-import bandImage from "@/assets/band-hero.jpg";
+import bandImage from "@/assets/pod-mostom.jpg";
 
 export function About() {
   const { language, t } = useLanguage();
