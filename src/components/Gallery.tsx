@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { X, Camera, FileImage, Folder, Shuffle, Image } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -153,24 +154,30 @@ function shuffleArray<T>(array: T[]): T[] {
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("photos");
-  const [shuffleKey, setShuffleKey] = useState(0);
+  const [shuffledItems, setShuffledItems] = useState<GalleryItem[]>(() => 
+    shuffleArray(galleryData["photos"])
+  );
   const [isShuffling, setIsShuffling] = useState(false);
   const { t } = useLanguage();
 
   const categories: GalleryCategory[] = ["photos", "posters", "other"];
 
-  const shuffledItems = useMemo(() => {
-    return shuffleArray(galleryData[activeCategory]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, shuffleKey]);
+  // Handle category change
+  const handleCategoryChange = useCallback((category: GalleryCategory) => {
+    setActiveCategory(category);
+    setShuffledItems(shuffleArray(galleryData[category]));
+  }, []);
 
   const handleShuffle = useCallback(() => {
+    if (isShuffling) return;
     setIsShuffling(true);
+    
+    // Trigger the shuffle with a slight delay for visual effect
     setTimeout(() => {
-      setShuffleKey(prev => prev + 1);
-      setTimeout(() => setIsShuffling(false), 300);
-    }, 150);
-  }, []);
+      setShuffledItems(shuffleArray(galleryData[activeCategory]));
+      setTimeout(() => setIsShuffling(false), 600);
+    }, 50);
+  }, [activeCategory, isShuffling]);
 
   return (
     <section 
@@ -199,7 +206,7 @@ export function Gallery() {
             return (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={`
                   flex items-center gap-2 px-5 py-3 border-2 font-mono text-sm uppercase tracking-wider
                   transition-all duration-200
@@ -234,58 +241,93 @@ export function Gallery() {
         </div>
 
         {/* Gallery Grid */}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-all duration-300 ${isShuffling ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
-          {shuffledItems.map((item, index) => (
-            <button
-              key={item.id}
-              onClick={() => setSelectedImage(item)}
-              className="group relative aspect-square overflow-hidden border-2 border-border bg-card transition-all duration-300 hover:border-primary focus:border-primary focus:outline-none animate-fade-in"
-              style={{ animationDelay: `${index * 30}ms` }}
-              aria-label={`View ${item.alt}`}
-            >
-              {/* Image */}
-              <img 
-                src={item.src} 
-                alt={item.alt}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
+        <LayoutGroup>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <AnimatePresence mode="popLayout">
+              {shuffledItems.map((item) => (
+                <motion.button
+                  key={item.id}
+                  layoutId={item.id}
+                  onClick={() => setSelectedImage(item)}
+                  className="group relative aspect-square overflow-hidden border-2 border-border bg-card hover:border-primary focus:border-primary focus:outline-none"
+                  aria-label={`View ${item.alt}`}
+                  layout
+                  initial={false}
+                  animate={{ 
+                    scale: isShuffling ? 0.5 : 1,
+                    opacity: 1,
+                    rotate: isShuffling ? Math.random() * 10 - 5 : 0,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 25,
+                    mass: 0.8,
+                    scale: {
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 20,
+                      mass: 0.5,
+                    },
+                    layout: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30,
+                      mass: 1,
+                    }
+                  }}
+                  whileHover={{ scale: isShuffling ? 0.5 : 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Image */}
+                  <img 
+                    src={item.src} 
+                    alt={item.alt}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                  />
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                <div className="text-left">
-                  <p className="font-mono text-xs text-primary uppercase tracking-wider">
-                    {item.caption}
-                  </p>
-                  <p className="font-mono text-xs text-muted-foreground mt-1">
-                    {item.alt}
-                  </p>
-                </div>
-              </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <div className="text-left">
+                      <p className="font-mono text-xs text-primary uppercase tracking-wider">
+                        {item.caption}
+                      </p>
+                      <p className="font-mono text-xs text-muted-foreground mt-1">
+                        {item.alt}
+                      </p>
+                    </div>
+                  </div>
 
-              {/* Corner Accent */}
-              <div 
-                className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-hidden="true"
-              />
-              <div 
-                className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-hidden="true"
-              />
-            </button>
-          ))}
-        </div>
+                  {/* Corner Accent */}
+                  <div 
+                    className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-hidden="true"
+                  />
+                  <div 
+                    className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-hidden="true"
+                  />
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </div>
+        </LayoutGroup>
       </div>
 
       {/* Lightbox Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Image lightbox"
-        >
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div 
+            className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
+            onClick={() => setSelectedImage(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Image lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
           <button
             onClick={() => setSelectedImage(null)}
             className="absolute top-4 right-4 p-2 text-foreground hover:text-primary transition-colors"
@@ -294,9 +336,13 @@ export function Gallery() {
             <X size={32} />
           </button>
 
-          <div 
+          <motion.div 
             className="max-w-4xl w-full border-2 border-border bg-card p-4"
             onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             <img 
               src={selectedImage.src} 
@@ -314,9 +360,10 @@ export function Gallery() {
                 )}
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </section>
   );
 }
