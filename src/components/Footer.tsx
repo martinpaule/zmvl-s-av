@@ -1,6 +1,9 @@
 import { bandInfo } from "@/data/bandInfo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Footer() {
+  const { language, t } = useLanguage();
+  const info = bandInfo[language];
   const currentYear = new Date().getFullYear();
 
   return (
@@ -10,7 +13,7 @@ export function Footer() {
           {/* Band Name */}
           <div className="text-center md:text-left">
             <span className="font-display text-2xl text-foreground">
-              {bandInfo.name}
+              {info.name}
             </span>
           </div>
 
@@ -20,26 +23,26 @@ export function Footer() {
               href="#about" 
               className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              About
+              {t("about")}
             </a>
             <a 
               href="#listen" 
               className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              Listen
+              {t("listen")}
             </a>
             <a 
               href="#gallery" 
               className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              Gallery
+              {t("gallery")}
             </a>
           </div>
 
           {/* Copyright */}
           <div className="text-center md:text-right">
             <p className="font-mono text-xs text-muted-foreground">
-              © {currentYear} {bandInfo.name}
+              © {currentYear} {info.name}
             </p>
             <p className="font-mono text-xs text-muted-foreground mt-1">
               All rights reserved.

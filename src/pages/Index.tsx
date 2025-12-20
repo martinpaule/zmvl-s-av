@@ -8,18 +8,22 @@ import { MusicProvider } from "@/contexts/MusicContext";
 import { VisualizerProvider } from "@/contexts/VisualizerContext";
 import { Helmet } from "react-helmet-async";
 import { bandInfo } from "@/data/bandInfo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const { language } = useLanguage();
+  const info = bandInfo[language];
+
   return (
     <>
       <Helmet>
-        <title>{bandInfo.name} | Official Website</title>
-        <meta name="description" content={bandInfo.tagline} />
-        <meta name="keywords" content="punk, industrial, band, music, underground, Berlin" />
-        <meta property="og:title" content={`${bandInfo.name} | Official Website`} />
-        <meta property="og:description" content={bandInfo.tagline} />
+        <title>{info.name} | Official Website</title>
+        <meta name="description" content={info.tagline} />
+        <meta name="keywords" content="industrial, noise, band, music, underground, Slovakia, Prievidza" />
+        <meta property="og:title" content={`${info.name} | Official Website`} />
+        <meta property="og:description" content={info.tagline} />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://theolddaysband.com" />
+        <link rel="canonical" href="https://zmvl.sk" />
       </Helmet>
 
       <MusicProvider>

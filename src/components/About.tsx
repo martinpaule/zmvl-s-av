@@ -1,8 +1,12 @@
 import { bandInfo } from "@/data/bandInfo";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { MapPin, Calendar, Music } from "lucide-react";
 import bandImage from "@/assets/band-hero.jpg";
 
 export function About() {
+  const { language, t } = useLanguage();
+  const info = bandInfo[language];
+
   return (
     <section 
       id="about" 
@@ -16,7 +20,7 @@ export function About() {
             id="about-heading"
             className="font-display text-5xl md:text-6xl text-foreground mb-4"
           >
-            ABOUT
+            {t("about").toUpperCase()}
           </h2>
           <div className="w-24 h-1 bg-primary" aria-hidden="true" />
         </div>
@@ -30,31 +34,31 @@ export function About() {
               <div className="p-4 border-l-4 border-primary bg-card">
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                   <MapPin size={16} />
-                  <span className="font-mono text-xs uppercase tracking-wider">Origin</span>
+                  <span className="font-mono text-xs uppercase tracking-wider">{t("origin")}</span>
                 </div>
-                <p className="font-heading text-lg text-foreground">{bandInfo.origin}</p>
+                <p className="font-heading text-lg text-foreground">{info.origin}</p>
               </div>
               
               <div className="p-4 border-l-4 border-accent bg-card">
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                   <Calendar size={16} />
-                  <span className="font-mono text-xs uppercase tracking-wider">Active</span>
+                  <span className="font-mono text-xs uppercase tracking-wider">{t("active")}</span>
                 </div>
-                <p className="font-heading text-lg text-foreground">{bandInfo.yearsActive}</p>
+                <p className="font-heading text-lg text-foreground">{info.yearsActive}</p>
               </div>
               
               <div className="p-4 border-l-4 border-primary bg-card">
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                   <Music size={16} />
-                  <span className="font-mono text-xs uppercase tracking-wider">Genre</span>
+                  <span className="font-mono text-xs uppercase tracking-wider">{t("genre")}</span>
                 </div>
-                <p className="font-heading text-lg text-foreground">{bandInfo.genre}</p>
+                <p className="font-heading text-lg text-foreground">{info.genre}</p>
               </div>
             </div>
 
             {/* Bio */}
             <div className="space-y-4">
-              {bandInfo.bio.split("\n\n").map((paragraph, index) => (
+              {info.bio.split("\n\n").map((paragraph, index) => (
                 <p 
                   key={index}
                   className="font-mono text-sm md:text-base text-muted-foreground leading-relaxed"
@@ -67,10 +71,10 @@ export function About() {
             {/* Members */}
             <div className="pt-6 border-t border-border">
               <h3 className="font-heading text-sm uppercase tracking-widest text-primary mb-4">
-                Members
+                {t("members")}
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                {bandInfo.members.map((member) => (
+                {info.members.map((member) => (
                   <div key={member.name} className="group">
                     <p className="font-heading text-foreground group-hover:text-primary transition-colors">
                       {member.name}
@@ -89,7 +93,7 @@ export function About() {
             <div className="aspect-[4/5] bg-card border-2 border-border overflow-hidden">
               <img 
                 src={bandImage} 
-                alt="THE OLD DAYS BAND performing live at an underground venue"
+                alt="ZOŽER MESIAC V LUFTE performing live"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />

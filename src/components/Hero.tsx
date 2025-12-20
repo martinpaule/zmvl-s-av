@@ -1,7 +1,11 @@
 import { bandInfo } from "@/data/bandInfo";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronDown } from "lucide-react";
 
 export function Hero() {
+  const { language } = useLanguage();
+  const info = bandInfo[language];
+
   const scrollToAbout = () => {
     document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -34,12 +38,9 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
         {/* Band Name */}
-        <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-foreground mb-6 animate-fade-in">
-          <span className="block">THE OLD</span>
-          <span className="block text-primary text-glow">DAYS</span>
-          <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-muted-foreground mt-2">
-            BAND
-          </span>
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6 animate-fade-in">
+          <span className="block">ZOŽER MESIAC</span>
+          <span className="block text-primary text-glow">V LUFTE</span>
         </h1>
 
         {/* Tagline */}
@@ -47,7 +48,7 @@ export function Hero() {
           className="font-mono text-sm md:text-base text-muted-foreground max-w-xl mx-auto mb-12 animate-fade-in"
           style={{ animationDelay: "0.2s" }}
         >
-          {bandInfo.tagline}
+          {info.tagline}
         </p>
 
         {/* Decorative Lines */}
@@ -60,7 +61,6 @@ export function Hero() {
           <span className="w-3 h-3 border-2 border-accent rotate-45" />
           <span className="w-16 md:w-24 h-0.5 bg-primary" />
         </div>
-
       </div>
 
       {/* Scroll Indicator */}

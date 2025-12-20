@@ -2,10 +2,12 @@ import { SpotifyPlayer } from "./SpotifyPlayer";
 import { TrackList } from "./TrackList";
 import { VisualizerCanvas } from "./VisualizerCanvas";
 import { useMusic } from "@/contexts/MusicContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Radio } from "lucide-react";
 
 export function Listen() {
   const { isPlaying, setIsPlaying } = useMusic();
+  const { t } = useLanguage();
 
   return (
     <section 
@@ -20,7 +22,7 @@ export function Listen() {
             id="listen-heading"
             className="font-display text-5xl md:text-6xl text-foreground mb-4"
           >
-            LISTEN
+            {t("listen").toUpperCase()}
           </h2>
           <div className="w-24 h-1 bg-accent" aria-hidden="true" />
         </div>
@@ -47,11 +49,8 @@ export function Listen() {
                   }
                 `}
               >
-                {isPlaying ? "Stop Visualizer" : "Start Visualizer"}
+                {isPlaying ? t("stopVisualizer") : t("startVisualizer")}
               </button>
-              <span className="font-mono text-xs text-muted-foreground">
-                Toggle to preview visualizer
-              </span>
             </div>
           </div>
 
@@ -62,10 +61,10 @@ export function Listen() {
               <Radio size={20} className={`${isPlaying ? "text-primary animate-pulse" : "text-muted-foreground"}`} />
               <div>
                 <h3 className="font-heading text-sm uppercase tracking-widest text-foreground">
-                  Live Visualizer
+                  {t("liveVisualizer")}
                 </h3>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Real-time audio visualization
+                  {t("visualizerDesc")}
                 </p>
               </div>
             </div>
@@ -73,15 +72,6 @@ export function Listen() {
             {/* Visualizer Canvas */}
             <div className="aspect-video border-2 border-border bg-card overflow-hidden box-glow">
               <VisualizerCanvas />
-            </div>
-
-            {/* Visualizer Info */}
-            <div className="p-4 border border-border bg-secondary/30">
-              <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-                Procedural audio visualization responding to simulated frequency data. 
-                The visualizer reacts to bass, mid, and treble frequencies with 
-                geometric forms and neon accents.
-              </p>
             </div>
           </div>
         </div>

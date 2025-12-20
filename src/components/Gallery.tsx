@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import gallery images
 import gallery01 from "@/assets/gallery-01.jpg";
@@ -20,43 +21,44 @@ const galleryItems: GalleryItem[] = [
   {
     id: "1",
     src: gallery01,
-    alt: "Live performance at underground venue",
-    caption: "Berlin, 2023",
+    alt: "Industrial performance with metal percussion",
+    caption: "Prievidza, 1991",
   },
   {
     id: "2",
     src: gallery02,
-    alt: "Close-up of guitarist during set",
-    caption: "Hamburg, 2023",
+    alt: "Live show with dramatic lighting",
+    caption: "Bratislava, 1993",
   },
   {
     id: "3",
     src: gallery03,
-    alt: "Drummer in action with dramatic lighting",
-    caption: "Prague, 2022",
+    alt: "Band members with instruments",
+    caption: "Kopřivnice, 1995",
   },
   {
     id: "4",
     src: gallery04,
-    alt: "Backstage at industrial venue",
-    caption: "Vienna, 2022",
+    alt: "Underground venue performance",
+    caption: "Brno, 1994",
   },
   {
     id: "5",
     src: gallery05,
-    alt: "Lead singer performing with smoke effects",
-    caption: "Amsterdam, 2023",
+    alt: "Noise session with metal objects",
+    caption: "Bzovík, 1995",
   },
   {
     id: "6",
     src: gallery06,
-    alt: "Stage setup with neon lighting",
-    caption: "Munich, 2023",
+    alt: "Final performance",
+    caption: "Trenčín, 1998",
   },
 ];
 
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+  const { t } = useLanguage();
 
   return (
     <section 
@@ -71,7 +73,7 @@ export function Gallery() {
             id="gallery-heading"
             className="font-display text-5xl md:text-6xl text-foreground mb-4"
           >
-            GALLERY
+            {t("gallery").toUpperCase()}
           </h2>
           <div className="w-24 h-1 bg-primary" aria-hidden="true" />
         </div>
