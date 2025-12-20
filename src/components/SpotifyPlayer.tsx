@@ -1,12 +1,14 @@
 import { useMusic } from "@/contexts/MusicContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function SpotifyPlayer() {
-  const { currentTrack, isPlaying } = useMusic();
+  const { currentTrack } = useMusic();
+  const { t } = useLanguage();
 
   if (!currentTrack) {
     return (
       <div className="w-full h-[152px] bg-card border border-border flex items-center justify-center">
-        <p className="font-mono text-sm text-muted-foreground">Select a track to play</p>
+        <p className="font-mono text-sm text-muted-foreground">{t("selectTrack")}</p>
       </div>
     );
   }

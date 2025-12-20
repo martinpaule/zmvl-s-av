@@ -1,8 +1,10 @@
 import { useMusic } from "@/contexts/MusicContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Play, Disc } from "lucide-react";
 
 export function TrackList() {
   const { playlist, currentTrack, selectTrack, setIsPlaying } = useMusic();
+  const { t } = useLanguage();
 
   const handleTrackClick = (song: typeof playlist[0]) => {
     selectTrack(song);
@@ -12,7 +14,7 @@ export function TrackList() {
   return (
     <div className="space-y-2">
       <h3 className="font-heading text-sm uppercase tracking-widest text-primary mb-4">
-        Playlist
+        {t("playlist")}
       </h3>
       
       <div className="space-y-1">

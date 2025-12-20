@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import { bandInfo } from "@/data/bandInfo";
-
-const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#listen", label: "Listen" },
-  { href: "#gallery", label: "Gallery" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { language, toggleLanguage, t } = useLanguage();
+
+  const navLinks = [
+    { href: "#about", label: t("about") },
+    { href: "#listen", label: t("listen") },
+    { href: "#gallery", label: t("gallery") },
+  ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -37,7 +39,7 @@ export function Navigation() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            {bandInfo.shortName}
+            {bandInfo[language].shortName}
           </a>
 
           {/* Desktop Navigation */}
@@ -53,6 +55,16 @@ export function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
+            
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 px-3 py-1.5 border border-border hover:border-primary text-muted-foreground hover:text-foreground transition-all font-mono text-xs uppercase tracking-wider"
+              aria-label={`Switch to ${language === "sk" ? "English" : "Slovak"}`}
+            >
+              <Globe size={14} />
+              {language === "sk" ? "EN" : "SK"}
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,6 +92,15 @@ export function Navigation() {
                   {link.label}
                 </a>
               ))}
+              
+              {/* Mobile Language Toggle */}
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-2 px-3 py-2 border border-border hover:border-primary text-muted-foreground hover:text-foreground transition-all font-mono text-sm uppercase tracking-wider w-fit"
+              >
+                <Globe size={16} />
+                {language === "sk" ? "English" : "Slovenčina"}
+              </button>
             </div>
           </div>
         )}
