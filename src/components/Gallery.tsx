@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { X, Camera, FileImage, Folder } from "lucide-react";
+import { useState, useCallback, useMemo } from "react";
+import { X, Camera, FileImage, Folder, Shuffle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import Myjava concert photos
@@ -13,6 +13,13 @@ import myjava07 from "@/assets/myjava-07.jpg";
 import myjava08 from "@/assets/myjava-08.jpg";
 import myjava09 from "@/assets/myjava-09.jpg";
 import myjava10 from "@/assets/myjava-10.jpg";
+import myjava11 from "@/assets/myjava-11.jpg";
+import myjava12 from "@/assets/myjava-12.jpg";
+import myjava13 from "@/assets/myjava-13.jpg";
+import myjava14 from "@/assets/myjava-14.jpg";
+import myjava15 from "@/assets/myjava-15.jpg";
+import myjava16 from "@/assets/myjava-16.jpg";
+import myjava17 from "@/assets/myjava-17.jpg";
 import article01 from "@/assets/article-01.jpg";
 import article02 from "@/assets/article-02.jpg";
 
@@ -52,220 +59,52 @@ type GalleryCategory = "photos" | "posters" | "other";
 
 const galleryData: Record<GalleryCategory, GalleryItem[]> = {
   photos: [
-    {
-      id: "photo-1",
-      src: myjava01,
-      alt: "Myjava koncert 1",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-2",
-      src: myjava02,
-      alt: "Myjava koncert 2",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-3",
-      src: myjava03,
-      alt: "Myjava koncert 3",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-4",
-      src: myjava04,
-      alt: "Myjava koncert 4",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-5",
-      src: myjava05,
-      alt: "Myjava koncert 5",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-6",
-      src: myjava06,
-      alt: "Myjava koncert 6",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-7",
-      src: myjava07,
-      alt: "Myjava koncert 7",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-8",
-      src: myjava08,
-      alt: "Myjava koncert 8",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-9",
-      src: myjava09,
-      alt: "Myjava koncert 9",
-      caption: "Myjava",
-    },
-    {
-      id: "photo-10",
-      src: myjava10,
-      alt: "Myjava koncert 10",
-      caption: "Myjava",
-    },
+    { id: "photo-1", src: myjava01, alt: "Myjava koncert 1", caption: "Myjava" },
+    { id: "photo-2", src: myjava02, alt: "Myjava koncert 2", caption: "Myjava" },
+    { id: "photo-3", src: myjava03, alt: "Myjava koncert 3", caption: "Myjava" },
+    { id: "photo-4", src: myjava04, alt: "Myjava koncert 4", caption: "Myjava" },
+    { id: "photo-5", src: myjava05, alt: "Myjava koncert 5", caption: "Myjava" },
+    { id: "photo-6", src: myjava06, alt: "Myjava koncert 6", caption: "Myjava" },
+    { id: "photo-7", src: myjava07, alt: "Myjava koncert 7", caption: "Myjava" },
+    { id: "photo-8", src: myjava08, alt: "Myjava koncert 8", caption: "Myjava" },
+    { id: "photo-9", src: myjava09, alt: "Myjava koncert 9", caption: "Myjava" },
+    { id: "photo-10", src: myjava10, alt: "Myjava koncert 10", caption: "Myjava" },
+    { id: "photo-11", src: myjava11, alt: "Myjava koncert 11", caption: "Myjava" },
+    { id: "photo-12", src: myjava12, alt: "Myjava koncert 12", caption: "Myjava" },
+    { id: "photo-13", src: myjava13, alt: "Myjava koncert 13", caption: "Myjava" },
+    { id: "photo-14", src: myjava14, alt: "Myjava koncert 14", caption: "Myjava" },
+    { id: "photo-15", src: myjava15, alt: "Myjava koncert 15", caption: "Myjava" },
+    { id: "photo-16", src: myjava16, alt: "Myjava koncert 16", caption: "Myjava" },
+    { id: "photo-17", src: myjava17, alt: "Myjava koncert 17", caption: "Myjava" },
   ],
   posters: [
-    {
-      id: "poster-1",
-      src: poster01,
-      alt: "Club dB Maximal Prievidza",
-      caption: "9.6.1993 - Prievidza",
-    },
-    {
-      id: "poster-2",
-      src: poster02,
-      alt: "Archbishop Kebab, Leukémia, Trottel + ZMVL",
-      caption: "16.10.1993 - Přerov-Kozlovice",
-    },
-    {
-      id: "poster-3",
-      src: poster03,
-      alt: "Slovenské Alternatívne Leto",
-      caption: "21-23.7.1995 - Bzovík",
-    },
-    {
-      id: "poster-4",
-      src: poster04,
-      alt: "Rock Fabrik - ZMVL Industrial Rock",
-      caption: "25.4.1992 - Bratislava",
-    },
-    {
-      id: "poster-5",
-      src: poster05,
-      alt: "Rock Fabrik August Program",
-      caption: "August 1992 - Bratislava",
-    },
-    {
-      id: "poster-6",
-      src: poster06,
-      alt: "Koncert Trenčianske Teplice",
-      caption: "3.6.1994 - Trenčianske Teplice",
-    },
-    {
-      id: "poster-7",
-      src: poster07,
-      alt: "Havlíček & Magnusek + ZMVL",
-      caption: "13.5.1994 - Prievidza Kazačok",
-    },
-    {
-      id: "poster-8",
-      src: poster08,
-      alt: "Zelený týždeň v Plynárni",
-      caption: "27.4.1996 - Dubnica nad Váhom",
-    },
-    {
-      id: "poster-9",
-      src: poster09,
-      alt: "Rock Fabrik Bratislava",
-      caption: "25.4.1992 - Bratislava",
-    },
-    {
-      id: "poster-10",
-      src: poster10,
-      alt: "ZMVL tričko Barbakán",
-      caption: "13.9.1992 - Banská Bystrica",
-    },
-    {
-      id: "poster-11",
-      src: poster11,
-      alt: "Underplunder T.H.Cultur Festival",
-      caption: "25.8-3.9.1995 - Brno",
-    },
-    {
-      id: "poster-12",
-      src: poster12,
-      alt: "Hlodanie '93",
-      caption: "16.7.1993 - Považská Bystrica",
-    },
-    {
-      id: "poster-13",
-      src: poster13,
-      alt: "Archbishop Kebab + ZMVL",
-      caption: "16.10.1993 - Přerov-Kozlovice",
-    },
-    {
-      id: "poster-14",
-      src: poster14,
-      alt: "OK Klub Duben '94",
-      caption: "22.4.1994 - Přerov",
-    },
-    {
-      id: "poster-15",
-      src: poster15,
-      alt: "Havlíček & Magnusek + ZMVL",
-      caption: "13.5.1994 - Prievidza Kazačok",
-    },
-    {
-      id: "poster-16",
-      src: poster16,
-      alt: "Koncert Trenčianske Teplice Baračka",
-      caption: "3.6.1994 - Trenčianske Teplice",
-    },
-    {
-      id: "poster-17",
-      src: poster17,
-      alt: "Snake Klub Leden 1995",
-      caption: "29.1.1995 - Olomouc",
-    },
-    {
-      id: "poster-18",
-      src: poster18,
-      alt: "Slovenské Alternatívne Leto",
-      caption: "21-23.7.1995 - Bzovík",
-    },
-    {
-      id: "poster-19",
-      src: poster19,
-      alt: "Slovenské Alternatívne Leto",
-      caption: "21-23.7.1995 - Bzovík",
-    },
-    {
-      id: "poster-20",
-      src: poster20,
-      alt: "Underplunder T.H.Cultur Festival",
-      caption: "25.8-3.9.1995 - Brno",
-    },
-    {
-      id: "poster-21",
-      src: poster21,
-      alt: "Zelený týždeň v Plynárni",
-      caption: "27.4.1996 - Dubnica nad Váhom",
-    },
-    {
-      id: "poster-22",
-      src: poster22,
-      alt: "Frog Jam 98 - CO Kryt",
-      caption: "19.9.1998 - Trenčín",
-    },
-    {
-      id: "poster-23",
-      src: poster23,
-      alt: "Pesničky - Paľby - Meditácie",
-      caption: "ZMVL koncertný plagát",
-    },
+    { id: "poster-1", src: poster01, alt: "Club dB Maximal Prievidza", caption: "9.6.1993 - Prievidza" },
+    { id: "poster-2", src: poster02, alt: "Archbishop Kebab, Leukémia, Trottel + ZMVL", caption: "16.10.1993 - Přerov-Kozlovice" },
+    { id: "poster-3", src: poster03, alt: "Slovenské Alternatívne Leto", caption: "21-23.7.1995 - Bzovík" },
+    { id: "poster-4", src: poster04, alt: "Rock Fabrik - ZMVL Industrial Rock", caption: "25.4.1992 - Bratislava" },
+    { id: "poster-5", src: poster05, alt: "Rock Fabrik August Program", caption: "August 1992 - Bratislava" },
+    { id: "poster-6", src: poster06, alt: "Koncert Trenčianske Teplice", caption: "3.6.1994 - Trenčianske Teplice" },
+    { id: "poster-7", src: poster07, alt: "Havlíček & Magnusek + ZMVL", caption: "13.5.1994 - Prievidza Kazačok" },
+    { id: "poster-8", src: poster08, alt: "Zelený týždeň v Plynárni", caption: "27.4.1996 - Dubnica nad Váhom" },
+    { id: "poster-9", src: poster09, alt: "Rock Fabrik Bratislava", caption: "25.4.1992 - Bratislava" },
+    { id: "poster-10", src: poster10, alt: "ZMVL tričko Barbakán", caption: "13.9.1992 - Banská Bystrica" },
+    { id: "poster-11", src: poster11, alt: "Underplunder T.H.Cultur Festival", caption: "25.8-3.9.1995 - Brno" },
+    { id: "poster-12", src: poster12, alt: "Hlodanie '93", caption: "16.7.1993 - Považská Bystrica" },
+    { id: "poster-13", src: poster13, alt: "Archbishop Kebab + ZMVL", caption: "16.10.1993 - Přerov-Kozlovice" },
+    { id: "poster-14", src: poster14, alt: "OK Klub Duben '94", caption: "22.4.1994 - Přerov" },
+    { id: "poster-15", src: poster15, alt: "Havlíček & Magnusek + ZMVL", caption: "13.5.1994 - Prievidza Kazačok" },
+    { id: "poster-16", src: poster16, alt: "Koncert Trenčianske Teplice Baračka", caption: "3.6.1994 - Trenčianske Teplice" },
+    { id: "poster-17", src: poster17, alt: "Snake Klub Leden 1995", caption: "29.1.1995 - Olomouc" },
+    { id: "poster-18", src: poster18, alt: "Slovenské Alternatívne Leto", caption: "21-23.7.1995 - Bzovík" },
+    { id: "poster-19", src: poster19, alt: "Slovenské Alternatívne Leto", caption: "21-23.7.1995 - Bzovík" },
+    { id: "poster-20", src: poster20, alt: "Underplunder T.H.Cultur Festival", caption: "25.8-3.9.1995 - Brno" },
+    { id: "poster-21", src: poster21, alt: "Zelený týždeň v Plynárni", caption: "27.4.1996 - Dubnica nad Váhom" },
+    { id: "poster-22", src: poster22, alt: "Frog Jam 98 - CO Kryt", caption: "19.9.1998 - Trenčín" },
+    { id: "poster-23", src: poster23, alt: "Pesničky - Paľby - Meditácie", caption: "ZMVL koncertný plagát" },
   ],
   other: [
-    {
-      id: "article-1",
-      src: article01,
-      alt: "Článok 1 / Article 1",
-      caption: "Článok 1",
-    },
-    {
-      id: "article-2",
-      src: article02,
-      alt: "Článok 2 / Article 2",
-      caption: "Článok 2",
-    },
+    { id: "article-1", src: article01, alt: "Článok 1 / Article 1", caption: "Článok 1" },
+    { id: "article-2", src: article02, alt: "Článok 2 / Article 2", caption: "Článok 2" },
   ],
 };
 
@@ -275,12 +114,37 @@ const categoryIcons = {
   other: Folder,
 };
 
+// Fisher-Yates shuffle algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("photos");
+  const [shuffleKey, setShuffleKey] = useState(0);
+  const [isShuffling, setIsShuffling] = useState(false);
   const { t } = useLanguage();
 
   const categories: GalleryCategory[] = ["photos", "posters", "other"];
+
+  const shuffledItems = useMemo(() => {
+    return shuffleArray(galleryData[activeCategory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeCategory, shuffleKey]);
+
+  const handleShuffle = useCallback(() => {
+    setIsShuffling(true);
+    setTimeout(() => {
+      setShuffleKey(prev => prev + 1);
+      setTimeout(() => setIsShuffling(false), 300);
+    }, 150);
+  }, []);
 
   return (
     <section 
@@ -300,8 +164,8 @@ export function Gallery() {
           <div className="w-24 h-1 bg-primary" aria-hidden="true" />
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex gap-2 mb-10 flex-wrap">
+        {/* Category Tabs + Shuffle */}
+        <div className="flex gap-2 mb-10 flex-wrap items-center">
           {categories.map((category) => {
             const Icon = categoryIcons[category];
             const isActive = activeCategory === category;
@@ -325,15 +189,31 @@ export function Gallery() {
               </button>
             );
           })}
+          
+          {/* Shuffle Button */}
+          <button
+            onClick={handleShuffle}
+            className={`
+              flex items-center gap-2 px-5 py-3 border-2 border-accent bg-accent/20 
+              text-accent-foreground hover:bg-accent hover:text-accent-foreground
+              font-mono text-sm uppercase tracking-wider transition-all duration-200
+              ${isShuffling ? 'animate-pulse' : ''}
+            `}
+            aria-label="Shuffle gallery"
+          >
+            <Shuffle size={18} className={isShuffling ? 'animate-spin' : ''} />
+            Shuffle
+          </button>
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {galleryData[activeCategory].map((item) => (
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-all duration-300 ${isShuffling ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+          {shuffledItems.map((item, index) => (
             <button
               key={item.id}
               onClick={() => setSelectedImage(item)}
-              className="group relative aspect-square overflow-hidden border-2 border-border bg-card transition-all duration-300 hover:border-primary focus:border-primary focus:outline-none"
+              className="group relative aspect-square overflow-hidden border-2 border-border bg-card transition-all duration-300 hover:border-primary focus:border-primary focus:outline-none animate-fade-in"
+              style={{ animationDelay: `${index * 30}ms` }}
               aria-label={`View ${item.alt}`}
             >
               {/* Image */}
