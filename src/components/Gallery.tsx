@@ -9,6 +9,8 @@ import gallery03 from "@/assets/gallery-03.jpg";
 import gallery04 from "@/assets/gallery-04.jpg";
 import gallery05 from "@/assets/gallery-05.jpg";
 import gallery06 from "@/assets/gallery-06.jpg";
+import article01 from "@/assets/article-01.jpg";
+import article02 from "@/assets/article-02.jpg";
 
 interface GalleryItem {
   id: string;
@@ -17,42 +19,74 @@ interface GalleryItem {
   caption?: string;
 }
 
-const galleryItems: GalleryItem[] = [
+interface GallerySection {
+  titleKey: string;
+  items: GalleryItem[];
+}
+
+const gallerySections: GallerySection[] = [
   {
-    id: "1",
-    src: gallery01,
-    alt: "Industrial performance with metal percussion",
-    caption: "Prievidza, 1991",
+    titleKey: "photos",
+    items: [
+      {
+        id: "photo-1",
+        src: gallery01,
+        alt: "Industrial performance with metal percussion",
+        caption: "Prievidza, 1991",
+      },
+      {
+        id: "photo-2",
+        src: gallery02,
+        alt: "Live show with dramatic lighting",
+        caption: "Bratislava, 1993",
+      },
+      {
+        id: "photo-3",
+        src: gallery03,
+        alt: "Band members with instruments",
+        caption: "Kopřivnice, 1995",
+      },
+      {
+        id: "photo-4",
+        src: gallery04,
+        alt: "Underground venue performance",
+        caption: "Brno, 1994",
+      },
+    ],
   },
   {
-    id: "2",
-    src: gallery02,
-    alt: "Live show with dramatic lighting",
-    caption: "Bratislava, 1993",
+    titleKey: "posters",
+    items: [
+      {
+        id: "poster-1",
+        src: gallery05,
+        alt: "Concert poster",
+        caption: "Bzovík, 1995",
+      },
+      {
+        id: "poster-2",
+        src: gallery06,
+        alt: "Event flyer",
+        caption: "Trenčín, 1998",
+      },
+    ],
   },
   {
-    id: "3",
-    src: gallery03,
-    alt: "Band members with instruments",
-    caption: "Kopřivnice, 1995",
-  },
-  {
-    id: "4",
-    src: gallery04,
-    alt: "Underground venue performance",
-    caption: "Brno, 1994",
-  },
-  {
-    id: "5",
-    src: gallery05,
-    alt: "Noise session with metal objects",
-    caption: "Bzovík, 1995",
-  },
-  {
-    id: "6",
-    src: gallery06,
-    alt: "Final performance",
-    caption: "Trenčín, 1998",
+    titleKey: "other",
+    items: [
+      {
+        id: "article-1",
+        src: article01,
+        alt: "Článok 1 / Article 1",
+        caption: "Článok 1",
+      },
+      {
+        id: "article-2",
+        src: article02,
+        alt: "Článok 2 / Article 2",
+        caption: "Článok 2",
+      },
+    ],
   },
 ];
 
@@ -78,45 +112,57 @@ export function Gallery() {
           <div className="w-24 h-1 bg-primary" aria-hidden="true" />
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {galleryItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setSelectedImage(item)}
-              className="group relative aspect-square overflow-hidden border-2 border-border bg-card transition-all duration-300 hover:border-primary focus:border-primary focus:outline-none"
-              aria-label={`View ${item.alt}`}
-            >
-              {/* Image */}
-              <img 
-                src={item.src} 
-                alt={item.alt}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
+        {/* Gallery Sections */}
+        <div className="space-y-16">
+          {gallerySections.map((section) => (
+            <div key={section.titleKey}>
+              {/* Subsection Header */}
+              <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-6 uppercase tracking-wider border-l-4 border-primary pl-4">
+                {t(section.titleKey)}
+              </h3>
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                <div className="text-left">
-                  <p className="font-mono text-xs text-primary uppercase tracking-wider">
-                    {item.caption}
-                  </p>
-                  <p className="font-mono text-xs text-muted-foreground mt-1">
-                    {item.alt}
-                  </p>
-                </div>
+              {/* Gallery Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {section.items.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setSelectedImage(item)}
+                    className="group relative aspect-square overflow-hidden border-2 border-border bg-card transition-all duration-300 hover:border-primary focus:border-primary focus:outline-none"
+                    aria-label={`View ${item.alt}`}
+                  >
+                    {/* Image */}
+                    <img 
+                      src={item.src} 
+                      alt={item.alt}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
+
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <div className="text-left">
+                        <p className="font-mono text-xs text-primary uppercase tracking-wider">
+                          {item.caption}
+                        </p>
+                        <p className="font-mono text-xs text-muted-foreground mt-1">
+                          {item.alt}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Corner Accent */}
+                    <div 
+                      className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-hidden="true"
+                    />
+                    <div 
+                      className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-hidden="true"
+                    />
+                  </button>
+                ))}
               </div>
-
-              {/* Corner Accent */}
-              <div 
-                className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-hidden="true"
-              />
-              <div 
-                className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-hidden="true"
-              />
-            </button>
+            </div>
           ))}
         </div>
       </div>
@@ -145,7 +191,7 @@ export function Gallery() {
             <img 
               src={selectedImage.src} 
               alt={selectedImage.alt}
-              className="w-full aspect-video object-cover mb-4"
+              className="w-full max-h-[70vh] object-contain mb-4"
             />
 
             <div className="flex justify-between items-center">
