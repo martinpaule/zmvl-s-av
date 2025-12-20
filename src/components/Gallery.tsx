@@ -31,6 +31,9 @@ import poster17 from "@/assets/poster-17.jpg";
 import poster18 from "@/assets/poster-18.jpg";
 import poster19 from "@/assets/poster-19.jpg";
 import poster20 from "@/assets/poster-20.jpg";
+import poster21 from "@/assets/poster-21.jpg";
+import poster22 from "@/assets/poster-22.jpg";
+import poster23 from "@/assets/poster-23.jpg";
 
 interface GalleryItem {
   id: string;
@@ -188,6 +191,24 @@ const galleryData: Record<GalleryCategory, GalleryItem[]> = {
       src: poster20,
       alt: "Underplunder T.H.Cultur Festival",
       caption: "25.8-3.9.1995 - Brno",
+    },
+    {
+      id: "poster-21",
+      src: poster21,
+      alt: "Zelený týždeň v Plynárni",
+      caption: "27.4.1996 - Dubnica nad Váhom",
+    },
+    {
+      id: "poster-22",
+      src: poster22,
+      alt: "Frog Jam 98 - CO Kryt",
+      caption: "19.9.1998 - Trenčín",
+    },
+    {
+      id: "poster-23",
+      src: poster23,
+      alt: "Pesničky - Paľby - Meditácie",
+      caption: "ZMVL koncertný plagát",
     },
   ],
   other: [

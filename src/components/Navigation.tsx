@@ -62,8 +62,7 @@ export function Navigation() {
               className="flex items-center gap-2 px-3 py-1.5 border border-border hover:border-primary text-muted-foreground hover:text-foreground transition-all font-mono text-xs uppercase tracking-wider"
               aria-label={`Switch to ${language === "sk" ? "English" : "Slovak"}`}
             >
-              <Globe size={14} />
-              {language === "sk" ? "EN" : "SK"}
+              {language === "sk" ? "🇬🇧 EN" : "🇸🇰 SK"}
             </button>
           </div>
 
@@ -98,8 +97,7 @@ export function Navigation() {
                 onClick={toggleLanguage}
                 className="flex items-center gap-2 px-3 py-2 border border-border hover:border-primary text-muted-foreground hover:text-foreground transition-all font-mono text-sm uppercase tracking-wider w-fit"
               >
-                <Globe size={16} />
-                {language === "sk" ? "English" : "Slovenčina"}
+                {language === "sk" ? "🇬🇧 English" : "🇸🇰 Slovenčina"}
               </button>
             </div>
           </div>
