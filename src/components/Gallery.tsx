@@ -171,12 +171,8 @@ export function Gallery() {
   const handleShuffle = useCallback(() => {
     if (isShuffling) return;
     setIsShuffling(true);
-    
-    // Trigger the shuffle with a slight delay for visual effect
-    setTimeout(() => {
-      setShuffledItems(shuffleArray(galleryData[activeCategory]));
-      setTimeout(() => setIsShuffling(false), 600);
-    }, 50);
+    setShuffledItems(shuffleArray(galleryData[activeCategory]));
+    setTimeout(() => setIsShuffling(false), 400);
   }, [activeCategory, isShuffling]);
 
   return (
@@ -198,37 +194,39 @@ export function Gallery() {
         </div>
 
         {/* Category Tabs + Shuffle */}
-        <div className="flex gap-2 mb-10 flex-wrap items-center">
-          {categories.map((category) => {
-            const Icon = categoryIcons[category];
-            const isActive = activeCategory === category;
-            
-            return (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={`
-                  flex items-center gap-2 px-5 py-3 border-2 font-mono text-sm uppercase tracking-wider
-                  transition-all duration-200
-                  ${isActive 
-                    ? "border-primary bg-primary text-primary-foreground" 
-                    : "border-border bg-card text-muted-foreground hover:border-primary hover:text-foreground"
-                  }
-                `}
-                aria-pressed={isActive}
-              >
-                <Icon size={18} />
-                {t(category)}
-              </button>
-            );
-          })}
+        <div className="flex gap-2 mb-10 flex-wrap items-center justify-between">
+          <div className="flex gap-2 flex-wrap items-center">
+            {categories.map((category) => {
+              const Icon = categoryIcons[category];
+              const isActive = activeCategory === category;
+              
+              return (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`
+                    flex items-center gap-2 px-5 py-3 border-2 font-mono text-sm uppercase tracking-wider
+                    transition-all duration-200
+                    ${isActive 
+                      ? "border-primary bg-primary text-primary-foreground" 
+                      : "border-border bg-card text-muted-foreground hover:border-primary hover:text-foreground"
+                    }
+                  `}
+                  aria-pressed={isActive}
+                >
+                  <Icon size={18} />
+                  {t(category)}
+                </button>
+              );
+            })}
+          </div>
           
           {/* Shuffle Button */}
           <button
             onClick={handleShuffle}
             className={`
-              flex items-center gap-2 px-5 py-3 border-2 border-accent bg-accent 
-              text-white hover:bg-accent/80
+              flex items-center gap-2 px-5 py-3 border-2 border-border bg-card 
+              text-muted-foreground hover:border-primary hover:text-foreground
               font-mono text-sm uppercase tracking-wider transition-all duration-200
               ${isShuffling ? 'animate-pulse' : ''}
             `}
