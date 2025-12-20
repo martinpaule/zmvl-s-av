@@ -67,25 +67,6 @@ export function About() {
                 </p>
               ))}
             </div>
-
-            {/* Members */}
-            <div className="pt-6 border-t border-border">
-              <h3 className="font-heading text-sm uppercase tracking-widest text-primary mb-4">
-                {t("members")}
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {info.members.map((member) => (
-                  <div key={member.name} className="group">
-                    <p className="font-heading text-foreground group-hover:text-primary transition-colors">
-                      {member.name}
-                    </p>
-                    <p className="font-mono text-xs text-muted-foreground">
-                      {member.role}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Image Column */}

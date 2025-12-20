@@ -5,18 +5,12 @@ export const bandInfo = {
     origin: "Prievidza, Slovensko",
     yearsActive: "1991–1998",
     genre: "Industrial / Noise / Experiment",
-    tagline: "Industriálny noise z podzemnej scény.",
+    tagline: "Industriálny noise z underground scény.",
     bio: `ZOŽER MESIAC V LUFTE bol industriálny/noise projekt z Prievidze, založený v roku 1991 po koncerte Einstürzende Neubauten vo Viedni. Ich pôvodný koncept "inzitný industriál kov na kov" znamenal zbesilé údery na kovové predmety – plechy, barely, pružiny a nákovy – doplnené o spracovanú basu hranú šrobovákmi a pilníkmi.
 
 Hudba bola z 90% improvizovaná, s deklamovaným spevom a primitívnymi výkrikmi. Filozofia kapely bola založená na industriálnych perkusívnych paľbách, monotónnosti a repetitívnosti. Neskôr pridali "meditačné" pasáže s gongmi, xylofónmi a akustickou gitarou – koncept známy ako "Pesničky / Paľby / Meditácie".
 
 Kapela hrala prevažne na moravskej hardcore scéne v rokoch 1994-1996 so spriaznenou kapelou Zabloudil. Posledné vystúpenie bolo v septembri 1998 v Trenčíne.`,
-    members: [
-      { name: "IVAN PAULE", role: "Spev / Koncept" },
-      { name: "MIRO OSWALD", role: "Perkusie / Koncept" },
-      { name: "JURO PLÁNOVSKÝ", role: "Basa" },
-      { name: "MIRO MAKYTA", role: "Perkusie" },
-    ],
   },
   en: {
     name: "ZOŽER MESIAC V LUFTE",
@@ -30,12 +24,6 @@ Kapela hrala prevažne na moravskej hardcore scéne v rokoch 1994-1996 so spriaz
 The music was 90% improvised, featuring declaimed vocals and primal screams. The band's philosophy was based on industrial percussive barrages, monotony, and repetition. Later they added "meditative" passages with gongs, xylophones, and acoustic guitar – a concept known as "Songs / Barrages / Meditations".
 
 The band played mostly in the Moravian hardcore scene during 1994-1996 alongside the kindred band Zabloudil. Their final performance was in September 1998 in Trenčín.`,
-    members: [
-      { name: "IVAN PAULE", role: "Vocals / Concept" },
-      { name: "MIRO OSWALD", role: "Percussion / Concept" },
-      { name: "JURO PLÁNOVSKÝ", role: "Bass" },
-      { name: "MIRO MAKYTA", role: "Percussion" },
-    ],
   },
 };
 
