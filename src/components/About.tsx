@@ -25,53 +25,50 @@ export function About() {
           <div className="w-24 h-1 bg-primary" aria-hidden="true" />
         </div>
 
-        {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Info Column */}
-          <div className="space-y-8">
-            {/* Quick Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 border-l-4 border-primary bg-card">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <MapPin size={16} />
-                  <span className="font-mono text-xs uppercase tracking-wider">{t("origin")}</span>
-                </div>
-                <p className="font-heading text-lg text-foreground">{info.origin}</p>
+        {/* Content - Vertical Stack */}
+        <div className="space-y-12">
+          {/* Quick Stats - Full Width */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-6 border-l-4 border-primary bg-card">
+              <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                <MapPin size={16} />
+                <span className="font-mono text-xs uppercase tracking-wider">{t("origin")}</span>
               </div>
-              
-              <div className="p-4 border-l-4 border-accent bg-card">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <Calendar size={16} />
-                  <span className="font-mono text-xs uppercase tracking-wider">{t("active")}</span>
-                </div>
-                <p className="font-heading text-lg text-foreground">{info.yearsActive}</p>
-              </div>
-              
-              <div className="p-4 border-l-4 border-primary bg-card">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <Music size={16} />
-                  <span className="font-mono text-xs uppercase tracking-wider">{t("genre")}</span>
-                </div>
-                <p className="font-heading text-lg text-foreground">{info.genre}</p>
-              </div>
+              <p className="font-heading text-xl text-foreground">{info.origin}</p>
             </div>
-
-            {/* Bio */}
-            <div className="space-y-4">
-              {info.bio.split("\n\n").map((paragraph, index) => (
-                <p 
-                  key={index}
-                  className="font-mono text-sm md:text-base text-muted-foreground leading-relaxed"
-                >
-                  {paragraph}
-                </p>
-              ))}
+            
+            <div className="p-6 border-l-4 border-accent bg-card">
+              <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                <Calendar size={16} />
+                <span className="font-mono text-xs uppercase tracking-wider">{t("active")}</span>
+              </div>
+              <p className="font-heading text-xl text-foreground">{info.yearsActive}</p>
+            </div>
+            
+            <div className="p-6 border-l-4 border-primary bg-card">
+              <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                <Music size={16} />
+                <span className="font-mono text-xs uppercase tracking-wider">{t("genre")}</span>
+              </div>
+              <p className="font-heading text-xl text-foreground">{info.genre}</p>
             </div>
           </div>
 
-          {/* Image Column */}
-          <div className="relative">
-            <div className="aspect-[4/5] bg-card border-2 border-border overflow-hidden">
+          {/* Bio - Full Width */}
+          <div className="max-w-4xl">
+            {info.bio.split("\n\n").map((paragraph, index) => (
+              <p 
+                key={index}
+                className="font-mono text-sm md:text-base text-muted-foreground leading-relaxed mb-4"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* Image - Full Width */}
+          <div className="relative max-w-3xl mx-auto">
+            <div className="aspect-[16/9] bg-card border-2 border-border overflow-hidden">
               <img 
                 src={bandImage} 
                 alt="ZOŽER MESIAC V LUFTE performing live"

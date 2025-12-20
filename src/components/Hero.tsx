@@ -69,17 +69,17 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
         {/* Band Name */}
-        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6 animate-fade-in">
-          <span className="block">ZOŽER MESIAC</span>
-          <span className="block text-primary text-glow">V LUFTE</span>
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6 animate-fade-in drop-shadow-[0_0_25px_rgba(255,255,255,0.5)]">
+          <span className="block drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">ZOŽER MESIAC</span>
+          <span className="block text-primary text-glow drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">V LUFTE</span>
         </h1>
 
         {/* Tagline */}
         <p 
-          className="font-mono text-sm md:text-base text-muted-foreground max-w-xl mx-auto mb-12 animate-fade-in"
+          className="font-mono text-sm md:text-base text-white max-w-xl mx-auto mb-12 animate-fade-in drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"
           style={{ animationDelay: "0.2s" }}
         >
-          {info.tagline}
+          Spomienky na {info.tagline.toLowerCase()}
         </p>
 
         {/* Decorative Lines */}
