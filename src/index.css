@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Brutalist dark palette */
+    /* Brutalist black/white palette */
     --background: 0 0% 4%;
     --foreground: 0 0% 95%;
 
@@ -16,8 +16,8 @@
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 95%;
 
-    /* Electric cyan accent */
-    --primary: 180 100% 50%;
+    /* White accent */
+    --primary: 0 0% 95%;
     --primary-foreground: 0 0% 4%;
 
     --secondary: 0 0% 12%;
@@ -26,23 +26,23 @@
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
 
-    /* Lime green accent */
-    --accent: 75 100% 50%;
+    /* Light gray accent */
+    --accent: 0 0% 80%;
     --accent-foreground: 0 0% 4%;
 
-    --destructive: 0 85% 55%;
+    --destructive: 0 0% 40%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 0 0% 20%;
+    --border: 0 0% 25%;
     --input: 0 0% 15%;
-    --ring: 180 100% 50%;
+    --ring: 0 0% 95%;
 
     --radius: 0px;
 
     /* Custom brutalist tokens */
     --noise-opacity: 0.03;
-    --glow-cyan: 180 100% 50%;
-    --glow-lime: 75 100% 50%;
+    --glow-primary: 0 0% 95%;
+    --glow-accent: 0 0% 80%;
     --steel: 0 0% 35%;
     --concrete: 0 0% 8%;
   }
@@ -54,19 +54,19 @@
     --card-foreground: 0 0% 95%;
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 95%;
-    --primary: 180 100% 50%;
+    --primary: 0 0% 95%;
     --primary-foreground: 0 0% 4%;
     --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 95%;
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
-    --accent: 75 100% 50%;
+    --accent: 0 0% 80%;
     --accent-foreground: 0 0% 4%;
-    --destructive: 0 85% 55%;
+    --destructive: 0 0% 40%;
     --destructive-foreground: 0 0% 95%;
-    --border: 0 0% 20%;
+    --border: 0 0% 25%;
     --input: 0 0% 15%;
-    --ring: 180 100% 50%;
+    --ring: 0 0% 95%;
   }
 }
 

@@ -61,20 +61,6 @@ export function Hero() {
           <span className="w-16 md:w-24 h-0.5 bg-primary" />
         </div>
 
-        {/* Genre Tags */}
-        <div 
-          className="flex flex-wrap items-center justify-center gap-3 animate-fade-in"
-          style={{ animationDelay: "0.6s" }}
-        >
-          {bandInfo.genre.split(" / ").map((genre) => (
-            <span
-              key={genre}
-              className="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-border bg-secondary/50 text-muted-foreground"
-            >
-              {genre}
-            </span>
-          ))}
-        </div>
       </div>
 
       {/* Scroll Indicator */}
