@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { X, Camera, FileImage, Folder, Shuffle } from "lucide-react";
+import { X, Camera, FileImage, Folder, Shuffle, Image } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import other concert photos
@@ -61,6 +61,7 @@ import poster20 from "@/assets/poster-20.jpg";
 import poster21 from "@/assets/poster-21.jpg";
 import poster22 from "@/assets/poster-22.jpg";
 import poster23 from "@/assets/poster-23.jpg";
+import poster24 from "@/assets/poster-24.jpg";
 
 interface GalleryItem {
   id: string;
@@ -125,6 +126,7 @@ const galleryData: Record<GalleryCategory, GalleryItem[]> = {
     { id: "poster-21", src: poster21, alt: "Zelený týždeň v Plynárni", caption: "27.4.1996 - Dubnica nad Váhom" },
     { id: "poster-22", src: poster22, alt: "Frog Jam 98 - CO Kryt", caption: "19.9.1998 - Trenčín" },
     { id: "poster-23", src: poster23, alt: "Pesničky - Paľby - Meditácie", caption: "ZMVL koncertný plagát" },
+    { id: "poster-24", src: poster24, alt: "Zožer Mesiac v Lufte - kresba Mišo", caption: "ZMVL kresba" },
   ],
   other: [
     { id: "article-1", src: article01, alt: "Článok 1 / Article 1", caption: "Článok 1" },
@@ -218,14 +220,15 @@ export function Gallery() {
           <button
             onClick={handleShuffle}
             className={`
-              flex items-center gap-2 px-5 py-3 border-2 border-accent bg-accent/20 
-              text-accent-foreground hover:bg-accent hover:text-accent-foreground
+              flex items-center gap-2 px-5 py-3 border-2 border-accent bg-accent 
+              text-white hover:bg-accent/80
               font-mono text-sm uppercase tracking-wider transition-all duration-200
               ${isShuffling ? 'animate-pulse' : ''}
             `}
             aria-label="Shuffle gallery"
           >
             <Shuffle size={18} className={isShuffling ? 'animate-spin' : ''} />
+            <Image size={18} />
             Shuffle
           </button>
         </div>
