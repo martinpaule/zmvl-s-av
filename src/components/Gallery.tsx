@@ -183,14 +183,14 @@ export function Gallery() {
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <h2 
             id="gallery-heading"
             className="font-display text-5xl md:text-6xl text-foreground mb-4"
           >
             {t("gallery").toUpperCase()}
           </h2>
-          <div className="w-24 h-1 bg-primary" aria-hidden="true" />
+          <div className="w-24 h-1 bg-primary mx-auto" aria-hidden="true" />
         </div>
 
         {/* Category Tabs + Shuffle */}

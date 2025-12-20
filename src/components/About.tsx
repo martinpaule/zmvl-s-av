@@ -15,14 +15,14 @@ export function About() {
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-16 text-center">
           <h2 
             id="about-heading"
             className="font-display text-5xl md:text-6xl text-foreground mb-4"
           >
             {t("about").toUpperCase()}
           </h2>
-          <div className="w-24 h-1 bg-primary" aria-hidden="true" />
+          <div className="w-24 h-1 bg-primary mx-auto" aria-hidden="true" />
         </div>
 
         {/* Content - Vertical Stack */}
