@@ -2,6 +2,15 @@ import { useState, useCallback, useMemo } from "react";
 import { X, Camera, FileImage, Folder, Shuffle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// Import Prerov concert photos
+import prerov01 from "@/assets/prerov-01.jpg";
+import prerov02 from "@/assets/prerov-02.jpg";
+import prerov03 from "@/assets/prerov-03.jpg";
+import prerov04 from "@/assets/prerov-04.jpg";
+import prerov05 from "@/assets/prerov-05.jpg";
+import prerov06 from "@/assets/prerov-06.jpg";
+import prerov07 from "@/assets/prerov-07.jpg";
+
 // Import Myjava concert photos
 import myjava01 from "@/assets/myjava-01.jpg";
 import myjava02 from "@/assets/myjava-02.jpg";
@@ -59,6 +68,13 @@ type GalleryCategory = "photos" | "posters" | "other";
 
 const galleryData: Record<GalleryCategory, GalleryItem[]> = {
   photos: [
+    { id: "prerov-1", src: prerov01, alt: "Prerov koncert 1", caption: "Prerov" },
+    { id: "prerov-2", src: prerov02, alt: "Prerov koncert 2", caption: "Prerov" },
+    { id: "prerov-3", src: prerov03, alt: "Prerov koncert 3", caption: "Prerov" },
+    { id: "prerov-4", src: prerov04, alt: "Prerov koncert 4", caption: "Prerov" },
+    { id: "prerov-5", src: prerov05, alt: "Prerov koncert 5", caption: "Prerov" },
+    { id: "prerov-6", src: prerov06, alt: "Prerov koncert 6", caption: "Prerov" },
+    { id: "prerov-7", src: prerov07, alt: "Prerov koncert 7", caption: "Prerov" },
     { id: "photo-1", src: myjava01, alt: "Myjava koncert 1", caption: "Myjava" },
     { id: "photo-2", src: myjava02, alt: "Myjava koncert 2", caption: "Myjava" },
     { id: "photo-3", src: myjava03, alt: "Myjava koncert 3", caption: "Myjava" },
