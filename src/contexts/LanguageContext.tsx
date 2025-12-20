@@ -10,8 +10,8 @@ interface LanguageContextType {
 
 const translations: Record<Language, Record<string, string>> = {
   sk: {
-    about: "O nás",
-    listen: "Počúvať",
+    about: "O kapele",
+    listen: "Počúvaj",
     gallery: "Galéria",
     origin: "Pôvod",
     active: "Aktívni",
@@ -24,7 +24,7 @@ const translations: Record<Language, Record<string, string>> = {
     other: "Iné",
   },
   en: {
-    about: "About",
+    about: "About The Band",
     listen: "Listen",
     gallery: "Gallery",
     origin: "Origin",

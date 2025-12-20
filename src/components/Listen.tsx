@@ -13,14 +13,14 @@ export function Listen() {
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-16 text-center">
           <h2 
             id="listen-heading"
             className="font-display text-5xl md:text-6xl text-foreground mb-4"
           >
             {t("listen").toUpperCase()}
           </h2>
-          <div className="w-24 h-1 bg-accent" aria-hidden="true" />
+          <div className="w-24 h-1 bg-accent mx-auto" aria-hidden="true" />
         </div>
 
         {/* Content */}
