@@ -24,7 +24,7 @@ export function Listen() {
         </div>
 
         {/* Content */}
-        <div className="max-w-2xl space-y-6">
+        <div className="max-w-2xl mx-auto space-y-6">
           <TrackList />
           
           <div className="border border-border p-4 bg-card">

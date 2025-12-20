@@ -44,9 +44,6 @@ export function Footer() {
             <p className="font-mono text-xs text-muted-foreground">
               © {currentYear} {info.name}
             </p>
-            <p className="font-mono text-xs text-muted-foreground mt-1">
-              All rights reserved.
-            </p>
           </div>
         </div>
 
