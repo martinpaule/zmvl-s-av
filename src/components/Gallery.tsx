@@ -76,7 +76,7 @@ type GalleryCategory = "photos" | "posters" | "other";
 const galleryData: Record<GalleryCategory, GalleryItem[]> = {
   photos: [
     { id: "pod-mostom", src: podMostom, alt: "Pod Mostom / Under The Bridge", caption: "Pod Mostom / Under The Bridge" },
-    { id: "klacno-1991", src: klacno1991, alt: "Čierni Spolu / Black Together", caption: "Čierni Spolu / Black Together" },
+    { id: "klacno-1991", src: klacno1991, alt: "Klačno 1991", caption: "Čierni Spolu / Black Together" },
     { id: "povazska-bystrica", src: povazskaBystrica, alt: "Považská Bystrica", caption: "Považská Bystrica" },
     { id: "prerov-1", src: prerov01, alt: "Prerov koncert 1", caption: "Prerov" },
     { id: "prerov-2", src: prerov02, alt: "Prerov koncert 2", caption: "Prerov" },
