@@ -23,6 +23,8 @@ const translations: Record<Language, Record<string, string>> = {
     posters: "Plagáty",
     other: "Iné",
     spotifyDescription: "Väčšina našich nahrávok je teraz dostupná na Spotify.",
+    recordings: "Nahrávky",
+    noTrackSelected: "Vyberte skladbu",
   },
   en: {
     about: "About The Band",
@@ -38,6 +40,8 @@ const translations: Record<Language, Record<string, string>> = {
     posters: "Posters",
     other: "Other",
     spotifyDescription: "Most of our recordings are now available on Spotify.",
+    recordings: "Recordings",
+    noTrackSelected: "Select a track",
   },
 };
 

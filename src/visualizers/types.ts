@@ -15,6 +15,7 @@
  * - time: Time in seconds since visualization started
  * - frequencyData: Uint8Array of frequency values (0-255)
  * - metrics: Derived audio metrics (volume, bass, mid, treble as 0-1 values)
+ * - waveformData: Optional Uint8Array of waveform values (0-255)
  */
 
 export interface AudioMetrics {
@@ -30,5 +31,6 @@ export type VisualizerFunction = (
   height: number,
   time: number,
   frequencyData: Uint8Array,
-  metrics: AudioMetrics
+  metrics: AudioMetrics,
+  waveformData?: Uint8Array
 ) => void;

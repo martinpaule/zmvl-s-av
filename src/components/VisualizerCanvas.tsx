@@ -4,15 +4,6 @@ import { barsVisualizer } from "@/visualizers/barsVisualizer";
 import { VisualizerFunction } from "@/visualizers/types";
 
 interface VisualizerCanvasProps {
-  /**
-   * The visualizer function to use for rendering.
-   * 
-   * TO SWAP VISUALIZERS:
-   * 1. Import your custom visualizer: import { myVisualizer } from "@/visualizers/myVisualizer"
-   * 2. Pass it as the visualizer prop: <VisualizerCanvas visualizer={myVisualizer} />
-   * 
-   * Default: barsVisualizer (bold bars with neon colors)
-   */
   visualizer?: VisualizerFunction;
   className?: string;
 }
@@ -22,7 +13,7 @@ export function VisualizerCanvas({
   className = "" 
 }: VisualizerCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { frequencyData, metrics, time, isActive } = useVisualizer();
+  const { frequencyData, waveformData, metrics, time, isActive } = useVisualizer();
   const animationRef = useRef<number>();
 
   useEffect(() => {
@@ -62,7 +53,7 @@ export function VisualizerCanvas({
       
       // Clear and render
       ctx.clearRect(0, 0, rect.width, rect.height);
-      visualizer(ctx, rect.width, rect.height, time, frequencyData, metrics);
+      visualizer(ctx, rect.width, rect.height, time, frequencyData, metrics, waveformData);
       
       animationRef.current = requestAnimationFrame(render);
     };
@@ -74,7 +65,7 @@ export function VisualizerCanvas({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [visualizer, frequencyData, metrics, time, isActive]);
+  }, [visualizer, frequencyData, waveformData, metrics, time, isActive]);
 
   return (
     <canvas
