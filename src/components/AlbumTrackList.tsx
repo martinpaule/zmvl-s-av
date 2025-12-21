@@ -14,7 +14,7 @@ interface AlbumSectionProps {
 
 function AlbumSection({ album, isOpen, onToggle }: AlbumSectionProps) {
   const { currentTrack, isPlaying, selectTrack } = useAudioPlayer();
-
+  const { t, language } = useLanguage();
   const handleTrackClick = (track: Track) => {
     selectTrack(track);
   };
@@ -51,7 +51,9 @@ function AlbumSection({ album, isOpen, onToggle }: AlbumSectionProps) {
             </div>
           </div>
           <span className="font-mono text-xs text-muted-foreground">
-            {album.tracks.length} {album.tracks.length === 1 ? "track" : "tracks"}
+            {album.tracks.length} {language === "sk" 
+              ? (album.tracks.length === 1 ? "stopa" : album.tracks.length < 5 ? "stopy" : "stôp")
+              : (album.tracks.length === 1 ? "track" : "tracks")}
           </span>
         </div>
       </CollapsibleTrigger>
@@ -188,7 +190,7 @@ export function AlbumTrackList() {
       />
       
       <CategorySection
-        title="Jams"
+        title={t("jams")}
         albumList={jamAlbums}
         openAlbums={openAlbums}
         onToggleAlbum={toggleAlbum}

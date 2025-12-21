@@ -235,11 +235,11 @@ export function Gallery() {
               font-mono text-sm uppercase tracking-wider transition-all duration-200
               ${isShuffling ? 'animate-pulse' : ''}
             `}
-            aria-label="Shuffle gallery"
+            aria-label={t("shuffleGallery")}
           >
             <Shuffle size={18} className={isShuffling ? 'animate-spin' : ''} />
             <Image size={18} />
-            Shuffle
+            {t("shuffleGallery")}
           </button>
         </div>
 

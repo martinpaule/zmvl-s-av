@@ -119,10 +119,10 @@ export function AudioPlayer() {
                     ? "bg-foreground text-background" 
                     : "bg-transparent text-muted-foreground hover:text-foreground"
                 }`}
-                aria-label="Linear play mode"
+                aria-label={t("linear")}
               >
                 <ArrowRight size={14} />
-                <span className="hidden sm:inline">Linear</span>
+                <span className="hidden sm:inline">{t("linear")}</span>
               </button>
               <button
                 onClick={() => !shuffleMode && toggleShuffleMode()}
@@ -131,10 +131,10 @@ export function AudioPlayer() {
                     ? "bg-foreground text-background" 
                     : "bg-transparent text-muted-foreground hover:text-foreground"
                 }`}
-                aria-label="Shuffle play mode"
+                aria-label={t("shuffle")}
               >
                 <Shuffle size={14} />
-                <span className="hidden sm:inline">Shuffle</span>
+                <span className="hidden sm:inline">{t("shuffle")}</span>
               </button>
             </div>
           </div>

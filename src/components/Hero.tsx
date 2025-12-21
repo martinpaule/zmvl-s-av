@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import heroBackground from "@/assets/poster-24.jpg";
 
 export function Hero() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const info = bandInfo[language];
   const [scrollY, setScrollY] = useState(0);
 
@@ -79,7 +79,7 @@ export function Hero() {
           className="font-mono text-sm md:text-base text-white max-w-xl mx-auto mb-12 animate-fade-in drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"
           style={{ animationDelay: "0.2s" }}
         >
-          Spomienky na {info.tagline.toLowerCase()}
+          {t("memoriesOf")} {info.tagline.toLowerCase()}
         </p>
 
         {/* Decorative Lines */}

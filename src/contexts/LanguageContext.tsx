@@ -10,38 +10,80 @@ interface LanguageContextType {
 
 const translations: Record<Language, Record<string, string>> = {
   sk: {
+    // Navigation
     about: "O kapele",
     listen: "Počúvaj",
     gallery: "Galéria",
+    
+    // About section
     origin: "Pôvod",
     active: "Aktívni",
     genre: "Žáner",
     members: "Členovia",
+    
+    // Listen section
+    recordings: "Nahrávky",
+    jams: "Jams",
     playlist: "Playlist",
     selectTrack: "Vyberte skladbu na prehratie",
+    noTrackSelected: "Vyberte skladbu",
+    spotifyDescription: "Väčšina našich nahrávok je teraz dostupná na Spotify.",
+    linear: "Lineárne",
+    shuffle: "Náhodne",
+    
+    // Gallery section
     photos: "Fotografie",
     posters: "Plagáty",
     other: "Iné",
-    spotifyDescription: "Väčšina našich nahrávok je teraz dostupná na Spotify.",
-    recordings: "Nahrávky",
-    noTrackSelected: "Vyberte skladbu",
+    shuffleGallery: "Zamiešať",
+    
+    // Hero section
+    memoriesOf: "Spomienky na",
+    
+    // Footer / misc
+    allRightsReserved: "Všetky práva vyhradené",
+    
+    // Tracks
+    track: "Stopa",
+    tracks: "stôp",
   },
   en: {
-    about: "About The Band",
+    // Navigation
+    about: "About",
     listen: "Listen",
     gallery: "Gallery",
+    
+    // About section
     origin: "Origin",
     active: "Active",
     genre: "Genre",
     members: "Members",
+    
+    // Listen section
+    recordings: "Recordings",
+    jams: "Jams",
     playlist: "Playlist",
     selectTrack: "Select a track to play",
+    noTrackSelected: "Select a track",
+    spotifyDescription: "Most of our recordings are now available on Spotify.",
+    linear: "Linear",
+    shuffle: "Shuffle",
+    
+    // Gallery section
     photos: "Photos",
     posters: "Posters",
     other: "Other",
-    spotifyDescription: "Most of our recordings are now available on Spotify.",
-    recordings: "Recordings",
-    noTrackSelected: "Select a track",
+    shuffleGallery: "Shuffle",
+    
+    // Hero section
+    memoriesOf: "Memories of",
+    
+    // Footer / misc
+    allRightsReserved: "All rights reserved",
+    
+    // Tracks
+    track: "Track",
+    tracks: "tracks",
   },
 };
 
