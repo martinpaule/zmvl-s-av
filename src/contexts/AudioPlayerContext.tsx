@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState, useRef, useCallback, useEffect } from "react";
-import { Track, allTracks, albums } from "@/data/albumSongs";
+import { Track, allTracks } from "@/data/albumSongs";
+import { allJamTracks } from "@/data/jamSongs";
+
+// Combined all tracks from both albums and jams
+const combinedAllTracks = [...allTracks, ...allJamTracks];
 
 interface AudioPlayerContextType {
   currentTrack: Track | null;
@@ -161,14 +165,14 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
   const getRandomTrack = useCallback(() => {
     // Get a random track that hasn't been played recently
     const current = currentTrackRef.current;
-    const availableTracks = allTracks.filter(
-      (t) => !shuffleHistoryRef.current.includes(t.id) || shuffleHistoryRef.current.length >= allTracks.length - 1
+    const availableTracks = combinedAllTracks.filter(
+      (t) => !shuffleHistoryRef.current.includes(t.id) || shuffleHistoryRef.current.length >= combinedAllTracks.length - 1
     );
     
     // If all tracks have been played, reset history but keep current track
     if (availableTracks.length === 0 || (availableTracks.length === 1 && availableTracks[0].id === current?.id)) {
       shuffleHistoryRef.current = current ? [current.id] : [];
-      return allTracks[Math.floor(Math.random() * allTracks.length)];
+      return combinedAllTracks[Math.floor(Math.random() * combinedAllTracks.length)];
     }
     
     // Filter out current track to avoid playing same song twice
@@ -192,12 +196,12 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
     } else {
       // Linear mode - circular through all tracks
       if (!current) {
-        selectTrack(allTracks[0]);
+        selectTrack(combinedAllTracks[0]);
         return;
       }
-      const currentIndex = allTracks.findIndex((t) => t.id === current.id);
-      const nextIndex = (currentIndex + 1) % allTracks.length;
-      selectTrack(allTracks[nextIndex]);
+      const currentIndex = combinedAllTracks.findIndex((t) => t.id === current.id);
+      const nextIndex = (currentIndex + 1) % combinedAllTracks.length;
+      selectTrack(combinedAllTracks[nextIndex]);
     }
   }, [selectTrack, getRandomTrack]);
 
@@ -210,7 +214,7 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
       if (shuffleHistoryRef.current.length > 1) {
         shuffleHistoryRef.current.pop(); // Remove current
         const prevId = shuffleHistoryRef.current[shuffleHistoryRef.current.length - 1];
-        const prevTrack = allTracks.find((t) => t.id === prevId);
+        const prevTrack = combinedAllTracks.find((t) => t.id === prevId);
         if (prevTrack) {
           selectTrack(prevTrack);
           return;
@@ -220,12 +224,12 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
     
     // Linear mode or no history - circular through all tracks
     if (!current) {
-      selectTrack(allTracks[allTracks.length - 1]);
+      selectTrack(combinedAllTracks[combinedAllTracks.length - 1]);
       return;
     }
-    const currentIndex = allTracks.findIndex((t) => t.id === current.id);
-    const prevIndex = currentIndex === 0 ? allTracks.length - 1 : currentIndex - 1;
-    selectTrack(allTracks[prevIndex]);
+    const currentIndex = combinedAllTracks.findIndex((t) => t.id === current.id);
+    const prevIndex = currentIndex === 0 ? combinedAllTracks.length - 1 : currentIndex - 1;
+    selectTrack(combinedAllTracks[prevIndex]);
   }, [selectTrack]);
 
   const toggleShuffleMode = useCallback(() => {
