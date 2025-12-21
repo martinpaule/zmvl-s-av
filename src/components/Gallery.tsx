@@ -75,8 +75,8 @@ type GalleryCategory = "photos" | "posters" | "other";
 
 const galleryData: Record<GalleryCategory, GalleryItem[]> = {
   photos: [
-    { id: "pod-mostom", src: podMostom, alt: "Pod mostom", caption: "Pod mostom" },
-    { id: "klacno-1991", src: klacno1991, alt: "Klačno sept 1991", caption: "Klačno 1991" },
+    { id: "pod-mostom", src: podMostom, alt: "Pod Mostom / Under The Bridge", caption: "Pod Mostom / Under The Bridge" },
+    { id: "klacno-1991", src: klacno1991, alt: "Čierni Spolu / Black Together", caption: "Čierni Spolu / Black Together" },
     { id: "povazska-bystrica", src: povazskaBystrica, alt: "Považská Bystrica", caption: "Považská Bystrica" },
     { id: "prerov-1", src: prerov01, alt: "Prerov koncert 1", caption: "Prerov" },
     { id: "prerov-2", src: prerov02, alt: "Prerov koncert 2", caption: "Prerov" },
@@ -151,11 +151,16 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+// Sort alphabetically by caption
+function sortByCaption(items: GalleryItem[]): GalleryItem[] {
+  return [...items].sort((a, b) => (a.caption || '').localeCompare(b.caption || ''));
+}
+
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("photos");
   const [shuffledItems, setShuffledItems] = useState<GalleryItem[]>(() => 
-    shuffleArray(galleryData["photos"])
+    sortByCaption(galleryData["photos"])
   );
   const [isShuffling, setIsShuffling] = useState(false);
   const { t } = useLanguage();
@@ -165,7 +170,7 @@ export function Gallery() {
   // Handle category change
   const handleCategoryChange = useCallback((category: GalleryCategory) => {
     setActiveCategory(category);
-    setShuffledItems(shuffleArray(galleryData[category]));
+    setShuffledItems(sortByCaption(galleryData[category]));
   }, []);
 
   const handleShuffle = useCallback(() => {
