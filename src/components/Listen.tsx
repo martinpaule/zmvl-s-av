@@ -29,11 +29,10 @@ export function Listen() {
         <div className="mb-16 text-center">
           <h2 
             id="listen-heading"
-            className="font-display text-5xl md:text-6xl text-foreground mb-4"
+            className="font-display text-5xl md:text-6xl text-foreground"
           >
             {t("listen").toUpperCase()}
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto" aria-hidden="true" />
         </div>
 
         {/* Music Player & Track List */}

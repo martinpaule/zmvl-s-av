@@ -7,8 +7,13 @@ import { waveformVisualizer } from "@/visualizers/waveformVisualizer";
 import { circularVisualizer } from "@/visualizers/circularVisualizer";
 import { particlesVisualizer } from "@/visualizers/particlesVisualizer";
 import { spectrumVisualizer } from "@/visualizers/spectrumVisualizer";
+import { matrixVisualizer } from "@/visualizers/matrixVisualizer";
+import { galaxyVisualizer } from "@/visualizers/galaxyVisualizer";
+import { oscilloscopeVisualizer } from "@/visualizers/oscilloscopeVisualizer";
+import { pulseVisualizer } from "@/visualizers/pulseVisualizer";
+import { fireVisualizer } from "@/visualizers/fireVisualizer";
 import { VisualizerFunction } from "@/visualizers/types";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Shuffle, ArrowRight } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import {
   Select,
@@ -24,6 +29,11 @@ const VISUALIZERS: { id: string; name: string; fn: VisualizerFunction }[] = [
   { id: "circular", name: "Circular", fn: circularVisualizer },
   { id: "particles", name: "Particles", fn: particlesVisualizer },
   { id: "spectrum", name: "Spectrum", fn: spectrumVisualizer },
+  { id: "matrix", name: "Matrix", fn: matrixVisualizer },
+  { id: "galaxy", name: "Galaxy", fn: galaxyVisualizer },
+  { id: "oscilloscope", name: "Oscilloscope", fn: oscilloscopeVisualizer },
+  { id: "pulse", name: "Pulse", fn: pulseVisualizer },
+  { id: "fire", name: "Fire", fn: fireVisualizer },
 ];
 
 function formatTime(seconds: number): string {
@@ -46,6 +56,8 @@ export function AudioPlayer() {
     setVolume,
     playNext,
     playPrevious,
+    shuffleMode,
+    toggleShuffleMode,
   } = useAudioPlayer();
   
   const [selectedVisualizer, setSelectedVisualizer] = useState("bars");
@@ -114,6 +126,17 @@ export function AudioPlayer() {
 
           {/* Playback controls */}
           <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={toggleShuffleMode}
+              className={`p-2 transition-colors ${
+                shuffleMode ? "text-accent" : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-label={shuffleMode ? "Switch to linear play" : "Switch to shuffle"}
+              title={shuffleMode ? "Shuffle" : "Linear"}
+            >
+              {shuffleMode ? <Shuffle size={18} /> : <ArrowRight size={18} />}
+            </button>
+            
             <button
               onClick={playPrevious}
               className="p-2 text-muted-foreground hover:text-foreground transition-colors"

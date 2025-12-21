@@ -40,7 +40,6 @@ export const albums: Album[] = [
   {
     id: "acer-demo",
     title: "Acer Studio Demo",
-    description: "Demo nahrávky z Acer štúdia",
     tracks: [
       { id: "acer-01", title: "Demo 1", audioUrl: acerDemo01 },
       { id: "acer-02", title: "Demo 2", audioUrl: acerDemo02 },
@@ -52,8 +51,7 @@ export const albums: Album[] = [
   },
   {
     id: "zmvl-studio",
-    title: "Zožer Mesiac v Lufte",
-    description: "Štúdiové nahrávky",
+    title: "Štúdiové nahrávky",
     tracks: [
       { id: "studio-01", title: "Track 1", audioUrl: studioTrack01 },
       { id: "studio-02", title: "Track 2", audioUrl: studioTrack02 },
@@ -68,8 +66,7 @@ export const albums: Album[] = [
   },
   {
     id: "rehearsal",
-    title: "Ladenie a skúšanie",
-    description: "Pred nahrávaním",
+    title: "Ladenie a skúšanie pred nahrávaním",
     tracks: [
       { id: "rehearsal-01", title: "Skúšobňa", audioUrl: rehearsal },
     ],
@@ -77,7 +74,6 @@ export const albums: Album[] = [
   {
     id: "zabloudilov",
     title: "Demo u Zablúdilov",
-    description: "Domáce demo nahrávky",
     tracks: [
       { id: "zab-side-a", title: "Strana A", audioUrl: zabloudilovSideA },
       { id: "zab-side-b", title: "Strana B", audioUrl: zabloudilovSideB },
