@@ -12,6 +12,8 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -21,7 +23,7 @@ const App = () => (
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              <BrowserRouter>
+              <BrowserRouter basename={base}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="*" element={<NotFound />} />
