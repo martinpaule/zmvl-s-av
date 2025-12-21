@@ -3,7 +3,7 @@ import { VisualizerFunction } from "./types";
 /**
  * FIRE VISUALIZER
  * 
- * Flame effect that reacts to audio intensity
+ * Flame effect that reacts to relative audio changes
  */
 
 interface Particle {
@@ -18,6 +18,12 @@ interface Particle {
 
 const particles: Particle[] = [];
 
+// Running averages for normalization
+let avgBass = 0.3;
+let avgVolume = 0.3;
+let peakBass = 0.5;
+let peakVolume = 0.5;
+
 export const fireVisualizer: VisualizerFunction = (
   ctx,
   width,
@@ -26,22 +32,45 @@ export const fireVisualizer: VisualizerFunction = (
   frequencyData,
   metrics
 ) => {
+  // Update running averages
+  const smoothing = 0.92;
+  avgBass = avgBass * smoothing + metrics.bass * (1 - smoothing);
+  avgVolume = avgVolume * smoothing + metrics.volume * (1 - smoothing);
+  
+  if (metrics.bass > peakBass) peakBass = metrics.bass;
+  if (metrics.volume > peakVolume) peakVolume = metrics.volume;
+  peakBass = Math.max(0.25, peakBass * 0.997);
+  peakVolume = Math.max(0.2, peakVolume * 0.998);
+  
+  // Calculate relative values
+  const relBass = Math.min(2, (metrics.bass - avgBass * 0.5) / Math.max(0.1, avgBass));
+  const relVolume = Math.min(2, (metrics.volume - avgVolume * 0.5) / Math.max(0.1, avgVolume));
+  const normalizedBass = metrics.bass / Math.max(0.2, peakBass);
+  const normalizedVolume = metrics.volume / Math.max(0.15, peakVolume);
+  
   // Dark background with fast fade for fire trail
-  ctx.fillStyle = "rgba(10, 5, 0, 0.2)";
+  ctx.fillStyle = "rgba(10, 5, 0, 0.18)";
   ctx.fillRect(0, 0, width, height);
 
-  // Spawn particles based on audio
-  const spawnCount = Math.floor(5 + metrics.volume * 20 + metrics.bass * 15);
+  // Spawn particles based on relative audio (responds to changes)
+  const baseSpawn = 3;
+  const relativeSpawn = Math.max(0, relVolume) * 12 + Math.max(0, relBass) * 10;
+  const normalizedSpawn = normalizedVolume * 8;
+  const spawnCount = Math.floor(baseSpawn + relativeSpawn + normalizedSpawn);
+  
   for (let i = 0; i < spawnCount; i++) {
     const x = width * 0.3 + Math.random() * width * 0.4;
+    const baseVy = -1.5 - Math.random() * 2;
+    const boostVy = -Math.max(0, relBass) * 3 - normalizedBass * 1.5;
+    
     particles.push({
       x,
       y: height,
-      vx: (Math.random() - 0.5) * 3,
-      vy: -2 - Math.random() * 3 - metrics.bass * 4,
+      vx: (Math.random() - 0.5) * 2,
+      vy: baseVy + boostVy,
       life: 1,
-      maxLife: 0.8 + Math.random() * 0.4,
-      size: 3 + Math.random() * 5 + metrics.bass * 5,
+      maxLife: 0.7 + Math.random() * 0.4,
+      size: 2 + Math.random() * 3 + Math.max(0, relBass) * 3 + normalizedBass * 2,
     });
   }
 
@@ -49,12 +78,13 @@ export const fireVisualizer: VisualizerFunction = (
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
     
-    // Physics
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vx += (Math.random() - 0.5) * 0.5; // Turbulence
-    p.vy += -0.05; // Slight upward acceleration
-    p.life -= 0.02;
+    // Physics - speed affected by relative audio
+    const speedMult = 1 + Math.max(0, relVolume) * 0.4;
+    p.x += p.vx * speedMult;
+    p.y += p.vy * speedMult;
+    p.vx += (Math.random() - 0.5) * 0.4; // Turbulence
+    p.vy += -0.03; // Slight upward acceleration
+    p.life -= 0.018;
     
     // Remove dead particles
     if (p.life <= 0 || p.y < 0) {
@@ -67,61 +97,64 @@ export const fireVisualizer: VisualizerFunction = (
     let hue: number;
     let lightness: number;
     
+    // Color intensity responds to relative audio
+    const intensityBoost = Math.max(0, relVolume) * 10;
+    
     if (lifeRatio > 0.7) {
-      // Hot white/yellow core
       hue = 60;
-      lightness = 90;
+      lightness = 85 + intensityBoost;
     } else if (lifeRatio > 0.4) {
-      // Orange
-      hue = 30;
-      lightness = 60;
+      hue = 30 + Math.max(0, relBass) * 10;
+      lightness = 55 + intensityBoost;
     } else {
-      // Red to dark red
       hue = 10;
-      lightness = 40 * lifeRatio;
+      lightness = 35 * lifeRatio + intensityBoost * 0.5;
     }
     
-    // Draw particle
-    const size = p.size * lifeRatio;
+    // Draw particle - size pulses with relative audio
+    const sizeMult = 1 + Math.max(0, relBass) * 0.3;
+    const size = p.size * lifeRatio * sizeMult;
     ctx.beginPath();
-    ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-    ctx.fillStyle = `hsla(${hue}, 100%, ${lightness}%, ${lifeRatio * 0.8})`;
+    ctx.arc(p.x, p.y, Math.max(1, size), 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${hue}, 100%, ${Math.min(100, lightness)}%, ${lifeRatio * 0.75})`;
     ctx.fill();
     
     // Add glow for hot particles
     if (lifeRatio > 0.5) {
-      ctx.shadowColor = `hsla(${hue}, 100%, ${lightness}%, 0.5)`;
-      ctx.shadowBlur = size * 2;
+      ctx.shadowColor = `hsla(${hue}, 100%, ${lightness}%, 0.4)`;
+      ctx.shadowBlur = size * 1.5;
       ctx.fill();
       ctx.shadowBlur = 0;
     }
   }
 
   // Limit particle count
-  while (particles.length > 500) {
+  while (particles.length > 400) {
     particles.shift();
   }
 
-  // Draw frequency bars at bottom as fire base
+  // Draw frequency bars at bottom as fire base - normalized
   const barWidth = width / frequencyData.length;
   for (let i = 0; i < frequencyData.length; i++) {
-    const value = frequencyData[i] / 255;
-    const barHeight = value * height * 0.2;
+    const rawValue = frequencyData[i] / 255;
+    const normalizedValue = Math.min(1.2, rawValue / 0.35);
+    const barHeight = normalizedValue * height * 0.18;
     const x = i * barWidth;
     const y = height - barHeight;
     
     const gradient = ctx.createLinearGradient(x, height, x, y);
-    gradient.addColorStop(0, `hsla(30, 100%, 50%, ${0.5 + value * 0.5})`);
+    gradient.addColorStop(0, `hsla(30, 100%, 50%, ${0.4 + normalizedValue * 0.4})`);
     gradient.addColorStop(1, "transparent");
     
     ctx.fillStyle = gradient;
     ctx.fillRect(x, y, barWidth, barHeight);
   }
 
-  // Add ambient glow at bottom
-  const ambientGradient = ctx.createLinearGradient(0, height, 0, height - 100);
-  ambientGradient.addColorStop(0, `hsla(25, 100%, 30%, ${0.3 + metrics.bass * 0.3})`);
+  // Add ambient glow at bottom - responds to relative bass
+  const glowIntensity = 0.2 + normalizedBass * 0.2 + Math.max(0, relBass) * 0.15;
+  const ambientGradient = ctx.createLinearGradient(0, height, 0, height - 80);
+  ambientGradient.addColorStop(0, `hsla(25, 100%, 30%, ${glowIntensity})`);
   ambientGradient.addColorStop(1, "transparent");
   ctx.fillStyle = ambientGradient;
-  ctx.fillRect(0, height - 100, width, 100);
+  ctx.fillRect(0, height - 80, width, 80);
 };
