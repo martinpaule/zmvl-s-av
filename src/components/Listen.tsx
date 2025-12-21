@@ -1,4 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import { AudioPlayer } from "./AudioPlayer";
+import { AlbumTrackList } from "./AlbumTrackList";
 
 // Spotify icon component
 function SpotifyIcon({ className }: { className?: string }) {
@@ -34,17 +36,26 @@ export function Listen() {
           <div className="w-24 h-1 bg-accent mx-auto" aria-hidden="true" />
         </div>
 
-        {/* Content */}
-        <div className="max-w-md mx-auto">
-          <a 
-            href="https://open.spotify.com/artist/5M52tdBnJaKSvOpJGz8mfZ"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 text-muted-foreground hover:text-foreground transition-colors font-mono text-sm group"
-          >
-            <SpotifyIcon className="w-6 h-6 text-[#1DB954] group-hover:scale-110 transition-transform" />
-            <span>{t("spotifyDescription")}</span>
-          </a>
+        {/* Music Player & Track List */}
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Audio Player with Visualizer */}
+          <AudioPlayer />
+          
+          {/* Album Track List */}
+          <AlbumTrackList />
+          
+          {/* Spotify Link */}
+          <div className="pt-8 border-t border-border">
+            <a 
+              href="https://open.spotify.com/artist/5M52tdBnJaKSvOpJGz8mfZ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 text-muted-foreground hover:text-foreground transition-colors font-mono text-sm group"
+            >
+              <SpotifyIcon className="w-6 h-6 text-[#1DB954] group-hover:scale-110 transition-transform" />
+              <span>{t("spotifyDescription")}</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AudioPlayerProvider } from "@/contexts/AudioPlayerContext";
+import { VisualizerProvider } from "@/contexts/VisualizerContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -14,17 +16,20 @@ const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <AudioPlayerProvider>
+          <VisualizerProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </VisualizerProvider>
+        </AudioPlayerProvider>
       </LanguageProvider>
     </QueryClientProvider>
   </HelmetProvider>
