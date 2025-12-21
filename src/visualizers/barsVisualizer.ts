@@ -3,17 +3,14 @@ import { VisualizerFunction } from "./types";
 /**
  * DEFAULT BARS VISUALIZER
  * 
- * A brutalist bar visualization with:
- * - Bold geometric bars
- * - High-contrast neon-on-black palette
- * - Snappy, mechanical motion
- * - Reactive to bass, mid, and treble
- * 
- * To replace this visualizer:
- * 1. Create a new visualizer function in src/visualizers/
- * 2. Import it in VisualizerCanvas.tsx
- * 3. Pass it as the `visualizer` prop
+ * A brutalist bar visualization with relative normalization
  */
+
+// Running averages for normalization
+let avgVolume = 0.3;
+let peakVolume = 0.5;
+let avgBass = 0.3;
+let avgTreble = 0.3;
 
 export const barsVisualizer: VisualizerFunction = (
   ctx,
@@ -23,6 +20,20 @@ export const barsVisualizer: VisualizerFunction = (
   frequencyData,
   metrics
 ) => {
+  // Update running averages
+  const smoothing = 0.93;
+  avgVolume = avgVolume * smoothing + metrics.volume * (1 - smoothing);
+  avgBass = avgBass * smoothing + metrics.bass * (1 - smoothing);
+  avgTreble = avgTreble * smoothing + metrics.treble * (1 - smoothing);
+  
+  if (metrics.volume > peakVolume) peakVolume = metrics.volume;
+  peakVolume = Math.max(0.2, peakVolume * 0.998);
+  
+  // Calculate relative values
+  const relBass = Math.min(2, (metrics.bass - avgBass * 0.5) / Math.max(0.1, avgBass));
+  const relTreble = Math.min(2, (metrics.treble - avgTreble * 0.5) / Math.max(0.1, avgTreble));
+  const normalizedBass = metrics.bass / Math.max(0.2, peakVolume);
+  
   // Clear with dark background
   ctx.fillStyle = "hsl(0, 0%, 4%)";
   ctx.fillRect(0, 0, width, height);
@@ -49,15 +60,25 @@ export const barsVisualizer: VisualizerFunction = (
   const barWidth = (width / numBars) * 0.8;
   const gap = (width / numBars) * 0.2;
 
+  // Calculate average frequency value for normalization
+  let freqSum = 0;
+  for (let i = 0; i < numBars; i++) {
+    freqSum += frequencyData[i];
+  }
+  const avgFreq = freqSum / numBars / 255;
+  const normalizer = Math.max(0.3, avgFreq * 2);
+
   // Color based on frequency range
   const getCyanColor = (intensity: number) => 
-    `hsla(180, 100%, 50%, ${0.7 + intensity * 0.3})`;
+    `hsla(180, 100%, ${45 + intensity * 25}%, ${0.6 + intensity * 0.4})`;
   const getLimeColor = (intensity: number) => 
-    `hsla(75, 100%, 50%, ${0.7 + intensity * 0.3})`;
+    `hsla(75, 100%, ${45 + intensity * 25}%, ${0.6 + intensity * 0.4})`;
 
   for (let i = 0; i < numBars; i++) {
-    const value = frequencyData[i] / 255;
-    const barHeight = value * height * 0.8;
+    const rawValue = frequencyData[i] / 255;
+    // Normalize each bar relative to average
+    const value = Math.min(1, rawValue / normalizer);
+    const barHeight = value * height * 0.75;
     const x = i * (barWidth + gap) + gap / 2;
     const y = height - barHeight;
 
@@ -66,14 +87,11 @@ export const barsVisualizer: VisualizerFunction = (
     let color: string;
     
     if (normalizedBin < 0.33) {
-      // Bass - cyan
       color = getCyanColor(value);
     } else if (normalizedBin < 0.66) {
-      // Mid - gradient between cyan and lime
       const blend = (normalizedBin - 0.33) / 0.33;
-      color = `hsla(${180 - blend * 105}, 100%, 50%, ${0.7 + value * 0.3})`;
+      color = `hsla(${180 - blend * 105}, 100%, ${45 + value * 25}%, ${0.6 + value * 0.4})`;
     } else {
-      // Treble - lime
       color = getLimeColor(value);
     }
 
@@ -81,39 +99,39 @@ export const barsVisualizer: VisualizerFunction = (
     ctx.fillStyle = color;
     ctx.fillRect(x, y, barWidth, barHeight);
 
-    // Glow effect for high values
-    if (value > 0.6) {
+    // Glow effect for high normalized values
+    if (value > 0.5) {
       ctx.shadowColor = color;
-      ctx.shadowBlur = 20 * value;
+      ctx.shadowBlur = 15 * value;
       ctx.fillRect(x, y, barWidth, barHeight);
       ctx.shadowBlur = 0;
     }
 
     // Top cap for brutalist effect
-    ctx.fillStyle = "hsl(0, 0%, 95%)";
-    ctx.fillRect(x, y - 3, barWidth, 3);
+    ctx.fillStyle = `hsla(0, 0%, 95%, ${0.6 + value * 0.4})`;
+    ctx.fillRect(x, y - 2, barWidth, 2);
   }
 
-  // Add reactive center element based on bass
+  // Add reactive center element based on relative bass
   const centerX = width / 2;
   const centerY = height / 2;
-  const pulseSize = 50 + metrics.bass * 100;
+  const pulseSize = 40 + normalizedBass * 60 + Math.max(0, relBass) * 40;
   
-  ctx.strokeStyle = getCyanColor(metrics.bass);
-  ctx.lineWidth = 3;
+  ctx.strokeStyle = getCyanColor(normalizedBass);
+  ctx.lineWidth = 2 + Math.max(0, relBass);
   ctx.beginPath();
   ctx.rect(centerX - pulseSize / 2, centerY - pulseSize / 2, pulseSize, pulseSize);
   ctx.stroke();
 
   // Inner square
   const innerSize = pulseSize * 0.6;
-  ctx.strokeStyle = getLimeColor(metrics.treble);
+  ctx.strokeStyle = getLimeColor(Math.max(0, relTreble) * 0.5 + 0.3);
   ctx.beginPath();
   ctx.rect(centerX - innerSize / 2, centerY - innerSize / 2, innerSize, innerSize);
   ctx.stroke();
 
   // Scanline effect
-  const scanlineY = (time * 100) % height;
-  ctx.fillStyle = "hsla(180, 100%, 50%, 0.1)";
+  const scanlineY = (time * 80) % height;
+  ctx.fillStyle = `hsla(180, 100%, 50%, ${0.05 + normalizedBass * 0.05})`;
   ctx.fillRect(0, scanlineY, width, 2);
 };
