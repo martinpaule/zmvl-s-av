@@ -25,6 +25,10 @@ export function Listen() {
 
         {/* Content */}
         <div className="max-w-2xl mx-auto space-y-6">
+          <p className="text-muted-foreground text-center font-mono text-sm">
+            {t("spotifyDescription")}
+          </p>
+          
           <TrackList />
           
           <div className="border border-border p-4 bg-card">
