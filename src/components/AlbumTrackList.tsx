@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { albums, Track } from "@/data/albumSongs";
+import { albums, Track, Album } from "@/data/albumSongs";
+import { jamAlbums } from "@/data/jamSongs";
 import { ChevronDown, ChevronRight, Play, Disc } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface AlbumSectionProps {
-  album: typeof albums[0];
+  album: Album;
   isOpen: boolean;
   onToggle: () => void;
 }
@@ -111,9 +112,61 @@ function AlbumSection({ album, isOpen, onToggle }: AlbumSectionProps) {
   );
 }
 
+interface CategorySectionProps {
+  title: string;
+  albumList: Album[];
+  openAlbums: string[];
+  onToggleAlbum: (albumId: string) => void;
+  isExpanded: boolean;
+  onToggleExpanded: () => void;
+}
+
+function CategorySection({ 
+  title, 
+  albumList, 
+  openAlbums, 
+  onToggleAlbum, 
+  isExpanded, 
+  onToggleExpanded 
+}: CategorySectionProps) {
+  return (
+    <div className="space-y-4">
+      <Collapsible open={isExpanded} onOpenChange={onToggleExpanded}>
+        <CollapsibleTrigger className="w-full">
+          <div className="flex items-center gap-2 group cursor-pointer">
+            {isExpanded ? (
+              <ChevronDown size={14} className="text-primary" />
+            ) : (
+              <ChevronRight size={14} className="text-primary" />
+            )}
+            <h3 className="font-heading text-sm uppercase tracking-widest text-primary group-hover:text-primary/80 transition-colors">
+              {title}
+            </h3>
+          </div>
+        </CollapsibleTrigger>
+        
+        <CollapsibleContent>
+          <div className="space-y-2 mt-4">
+            {albumList.map((album) => (
+              <AlbumSection
+                key={album.id}
+                album={album}
+                isOpen={openAlbums.includes(album.id)}
+                onToggle={() => onToggleAlbum(album.id)}
+              />
+            ))}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
+  );
+}
+
 export function AlbumTrackList() {
   const { t } = useLanguage();
   const [openAlbums, setOpenAlbums] = useState<string[]>([]);
+  const [recordingsExpanded, setRecordingsExpanded] = useState(true);
+  const [jamsExpanded, setJamsExpanded] = useState(true);
 
   const toggleAlbum = (albumId: string) => {
     setOpenAlbums((prev) =>
@@ -124,21 +177,24 @@ export function AlbumTrackList() {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="font-heading text-sm uppercase tracking-widest text-primary">
-        {t("recordings")}
-      </h3>
+    <div className="space-y-8">
+      <CategorySection
+        title={t("recordings")}
+        albumList={albums}
+        openAlbums={openAlbums}
+        onToggleAlbum={toggleAlbum}
+        isExpanded={recordingsExpanded}
+        onToggleExpanded={() => setRecordingsExpanded(!recordingsExpanded)}
+      />
       
-      <div className="space-y-2">
-        {albums.map((album) => (
-          <AlbumSection
-            key={album.id}
-            album={album}
-            isOpen={openAlbums.includes(album.id)}
-            onToggle={() => toggleAlbum(album.id)}
-          />
-        ))}
-      </div>
+      <CategorySection
+        title="Jams"
+        albumList={jamAlbums}
+        openAlbums={openAlbums}
+        onToggleAlbum={toggleAlbum}
+        isExpanded={jamsExpanded}
+        onToggleExpanded={() => setJamsExpanded(!jamsExpanded)}
+      />
     </div>
   );
 }
