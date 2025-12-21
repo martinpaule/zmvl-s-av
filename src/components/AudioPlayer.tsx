@@ -99,14 +99,44 @@ export function AudioPlayer() {
 
         {/* Controls */}
         <div className="flex flex-col justify-center space-y-4 p-4 border-2 border-border bg-card">
-          {/* Track info */}
-          <div className="text-center">
-            <p className="font-heading text-lg text-foreground truncate">
-              {currentTrack?.title || t("noTrackSelected")}
-            </p>
-            <p className="font-mono text-xs text-muted-foreground">
-              {currentTrack ? "ZMVL" : "—"}
-            </p>
+          {/* Track info with play mode toggle */}
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="font-heading text-lg text-foreground truncate">
+                {currentTrack?.title || t("noTrackSelected")}
+              </p>
+              <p className="font-mono text-xs text-muted-foreground">
+                {currentTrack ? "ZMVL" : "—"}
+              </p>
+            </div>
+            
+            {/* Play mode toggle */}
+            <div className="flex items-center border-2 border-border rounded-none overflow-hidden shrink-0">
+              <button
+                onClick={() => shuffleMode && toggleShuffleMode()}
+                className={`flex items-center gap-1 px-2 py-1 text-xs font-mono transition-colors ${
+                  !shuffleMode 
+                    ? "bg-foreground text-background" 
+                    : "bg-transparent text-muted-foreground hover:text-foreground"
+                }`}
+                aria-label="Linear play mode"
+              >
+                <ArrowRight size={14} />
+                <span className="hidden sm:inline">Linear</span>
+              </button>
+              <button
+                onClick={() => !shuffleMode && toggleShuffleMode()}
+                className={`flex items-center gap-1 px-2 py-1 text-xs font-mono transition-colors ${
+                  shuffleMode 
+                    ? "bg-foreground text-background" 
+                    : "bg-transparent text-muted-foreground hover:text-foreground"
+                }`}
+                aria-label="Shuffle play mode"
+              >
+                <Shuffle size={14} />
+                <span className="hidden sm:inline">Shuffle</span>
+              </button>
+            </div>
           </div>
 
           {/* Progress bar */}
@@ -126,17 +156,6 @@ export function AudioPlayer() {
 
           {/* Playback controls */}
           <div className="flex items-center justify-center gap-4">
-            <button
-              onClick={toggleShuffleMode}
-              className={`p-2 transition-colors ${
-                shuffleMode ? "text-accent" : "text-muted-foreground hover:text-foreground"
-              }`}
-              aria-label={shuffleMode ? "Switch to linear play" : "Switch to shuffle"}
-              title={shuffleMode ? "Shuffle" : "Linear"}
-            >
-              {shuffleMode ? <Shuffle size={18} /> : <ArrowRight size={18} />}
-            </button>
-            
             <button
               onClick={playPrevious}
               className="p-2 text-muted-foreground hover:text-foreground transition-colors"

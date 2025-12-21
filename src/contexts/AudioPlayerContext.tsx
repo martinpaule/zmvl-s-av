@@ -37,6 +37,17 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const isInitializedRef = useRef(false);
   const shuffleHistoryRef = useRef<string[]>([]);
+  const shuffleModeRef = useRef(shuffleMode);
+  const currentTrackRef = useRef(currentTrack);
+  
+  // Keep refs in sync
+  useEffect(() => {
+    shuffleModeRef.current = shuffleMode;
+  }, [shuffleMode]);
+  
+  useEffect(() => {
+    currentTrackRef.current = currentTrack;
+  }, [currentTrack]);
 
   // Initialize audio element once
   useEffect(() => {
@@ -149,22 +160,30 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
 
   const getRandomTrack = useCallback(() => {
     // Get a random track that hasn't been played recently
+    const current = currentTrackRef.current;
     const availableTracks = allTracks.filter(
       (t) => !shuffleHistoryRef.current.includes(t.id) || shuffleHistoryRef.current.length >= allTracks.length - 1
     );
     
     // If all tracks have been played, reset history but keep current track
-    if (availableTracks.length === 0 || (availableTracks.length === 1 && availableTracks[0].id === currentTrack?.id)) {
-      shuffleHistoryRef.current = currentTrack ? [currentTrack.id] : [];
+    if (availableTracks.length === 0 || (availableTracks.length === 1 && availableTracks[0].id === current?.id)) {
+      shuffleHistoryRef.current = current ? [current.id] : [];
       return allTracks[Math.floor(Math.random() * allTracks.length)];
     }
     
-    const randomIndex = Math.floor(Math.random() * availableTracks.length);
-    return availableTracks[randomIndex];
-  }, [currentTrack]);
+    // Filter out current track to avoid playing same song twice
+    const filteredTracks = availableTracks.filter(t => t.id !== current?.id);
+    const tracksToChooseFrom = filteredTracks.length > 0 ? filteredTracks : availableTracks;
+    
+    const randomIndex = Math.floor(Math.random() * tracksToChooseFrom.length);
+    return tracksToChooseFrom[randomIndex];
+  }, []);
 
   const playNext = useCallback(() => {
-    if (shuffleMode) {
+    const isShuffleMode = shuffleModeRef.current;
+    const current = currentTrackRef.current;
+    
+    if (isShuffleMode) {
       const nextTrack = getRandomTrack();
       if (nextTrack) {
         shuffleHistoryRef.current.push(nextTrack.id);
@@ -172,18 +191,21 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
       }
     } else {
       // Linear mode - circular through all tracks
-      if (!currentTrack) {
+      if (!current) {
         selectTrack(allTracks[0]);
         return;
       }
-      const currentIndex = allTracks.findIndex((t) => t.id === currentTrack.id);
+      const currentIndex = allTracks.findIndex((t) => t.id === current.id);
       const nextIndex = (currentIndex + 1) % allTracks.length;
       selectTrack(allTracks[nextIndex]);
     }
-  }, [currentTrack, selectTrack, shuffleMode, getRandomTrack]);
+  }, [selectTrack, getRandomTrack]);
 
   const playPrevious = useCallback(() => {
-    if (shuffleMode) {
+    const isShuffleMode = shuffleModeRef.current;
+    const current = currentTrackRef.current;
+    
+    if (isShuffleMode) {
       // In shuffle mode, go back in history
       if (shuffleHistoryRef.current.length > 1) {
         shuffleHistoryRef.current.pop(); // Remove current
@@ -197,19 +219,19 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
     }
     
     // Linear mode or no history - circular through all tracks
-    if (!currentTrack) {
+    if (!current) {
       selectTrack(allTracks[allTracks.length - 1]);
       return;
     }
-    const currentIndex = allTracks.findIndex((t) => t.id === currentTrack.id);
+    const currentIndex = allTracks.findIndex((t) => t.id === current.id);
     const prevIndex = currentIndex === 0 ? allTracks.length - 1 : currentIndex - 1;
     selectTrack(allTracks[prevIndex]);
-  }, [currentTrack, selectTrack, shuffleMode]);
+  }, [selectTrack]);
 
   const toggleShuffleMode = useCallback(() => {
     setShuffleMode((prev) => !prev);
-    shuffleHistoryRef.current = currentTrack ? [currentTrack.id] : [];
-  }, [currentTrack]);
+    shuffleHistoryRef.current = currentTrackRef.current ? [currentTrackRef.current.id] : [];
+  }, []);
 
   return (
     <AudioPlayerContext.Provider
