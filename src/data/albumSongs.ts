@@ -83,3 +83,8 @@ export const albums: Album[] = [
 
 // Flatten all tracks for easy access
 export const allTracks: Track[] = albums.flatMap((album) => album.tracks);
+
+// Get album name by track ID
+export function getAlbumByTrackId(trackId: string): Album | undefined {
+  return albums.find((album) => album.tracks.some((track) => track.id === trackId));
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { VisualizerCanvas } from "./VisualizerCanvas";
@@ -15,6 +15,8 @@ import { fireVisualizer } from "@/visualizers/fireVisualizer";
 import { VisualizerFunction } from "@/visualizers/types";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Shuffle, ArrowRight } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
+import { getAlbumByTrackId } from "@/data/albumSongs";
+import { getJamAlbumByTrackId } from "@/data/jamSongs";
 import {
   Select,
   SelectContent,
@@ -63,6 +65,13 @@ export function AudioPlayer() {
   const [selectedVisualizer, setSelectedVisualizer] = useState("bars");
   const currentVisualizerFn = VISUALIZERS.find((v) => v.id === selectedVisualizer)?.fn || barsVisualizer;
 
+  // Get album name for current track
+  const currentAlbumName = useMemo(() => {
+    if (!currentTrack) return null;
+    const album = getAlbumByTrackId(currentTrack.id) || getJamAlbumByTrackId(currentTrack.id);
+    return album?.title || null;
+  }, [currentTrack]);
+
   return (
     <div className="w-full space-y-4">
       {/* Visualizer + Controls Layout */}
@@ -106,7 +115,7 @@ export function AudioPlayer() {
                 {currentTrack?.title || t("noTrackSelected")}
               </p>
               <p className="font-mono text-xs text-muted-foreground">
-                {currentTrack ? "ZMVL" : "—"}
+                {currentAlbumName || "—"}
               </p>
             </div>
             
