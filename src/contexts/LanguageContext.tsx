@@ -30,6 +30,7 @@ const translations: Record<Language, Record<string, string>> = {
     spotifyDescription: "Väčšina našich nahrávok je teraz dostupná na Spotify.",
     linear: "Lineárne",
     shuffle: "Náhodne",
+    playRandom: "Náhodná skladba",
     
     // Gallery section
     photos: "Fotografie",
@@ -70,6 +71,7 @@ const translations: Record<Language, Record<string, string>> = {
     spotifyDescription: "Most of our recordings are now available on Spotify.",
     linear: "Linear",
     shuffle: "Shuffle",
+    playRandom: "Play random",
     
     // Gallery section
     photos: "Photos",
