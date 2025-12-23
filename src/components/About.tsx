@@ -54,8 +54,8 @@ export function About() {
             </div>
           </div>
 
-          {/* Bio - Full Width */}
-          <div className="max-w-4xl">
+          {/* Bio - Centered */}
+          <div className="max-w-4xl mx-auto text-center">
             {info.bio.split("\n\n").map((paragraph, index) => (
               <p 
                 key={index}
