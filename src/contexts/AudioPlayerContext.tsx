@@ -23,6 +23,7 @@ interface AudioPlayerContextType {
   playNext: () => void;
   playPrevious: () => void;
   toggleShuffleMode: () => void;
+  playRandom: () => void;
 }
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(undefined);
@@ -144,9 +145,14 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
     if (isPlaying) {
       pause();
     } else {
-      play();
+      // If no track is selected, play the first track
+      if (!currentTrackRef.current) {
+        selectTrack(combinedAllTracks[0]);
+      } else {
+        play();
+      }
     }
-  }, [isPlaying, play, pause]);
+  }, [isPlaying, play, pause, selectTrack]);
 
   const seek = useCallback((time: number) => {
     if (audioRef.current) {
@@ -237,6 +243,14 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
     shuffleHistoryRef.current = currentTrackRef.current ? [currentTrackRef.current.id] : [];
   }, []);
 
+  const playRandom = useCallback(() => {
+    const randomTrack = getRandomTrack();
+    if (randomTrack) {
+      shuffleHistoryRef.current.push(randomTrack.id);
+      selectTrack(randomTrack);
+    }
+  }, [getRandomTrack, selectTrack]);
+
   return (
     <AudioPlayerContext.Provider
       value={{
@@ -257,6 +271,7 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
         playNext,
         playPrevious,
         toggleShuffleMode,
+        playRandom,
       }}
     >
       {children}
