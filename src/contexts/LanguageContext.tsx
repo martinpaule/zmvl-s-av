@@ -44,8 +44,10 @@ const translations: Record<Language, Record<string, string>> = {
     allRightsReserved: "Všetky práva vyhradené",
     
     // Tracks
-    track: "Stopa",
-    tracks: "stôp",
+    track: "Skladba",
+    tracks_1: "skladba",
+    tracks_2_4: "skladby",
+    tracks_5_plus: "skladieb",
   },
   en: {
     // Navigation

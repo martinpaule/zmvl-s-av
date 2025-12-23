@@ -52,7 +52,7 @@ function AlbumSection({ album, isOpen, onToggle }: AlbumSectionProps) {
           </div>
           <span className="font-mono text-xs text-muted-foreground">
             {album.tracks.length} {language === "sk" 
-              ? (album.tracks.length === 1 ? "stopa" : album.tracks.length < 5 ? "stopy" : "stôp")
+              ? (album.tracks.length === 1 ? t("tracks_1") : album.tracks.length >= 2 && album.tracks.length <= 4 ? t("tracks_2_4") : t("tracks_5_plus"))
               : (album.tracks.length === 1 ? "track" : "tracks")}
           </span>
         </div>
