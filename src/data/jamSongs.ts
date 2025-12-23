@@ -63,3 +63,8 @@ export const jamAlbums: Album[] = [
 
 // Flatten all jam tracks for easy access
 export const allJamTracks: Track[] = jamAlbums.flatMap((album) => album.tracks);
+
+// Get album name by track ID
+export function getJamAlbumByTrackId(trackId: string): Album | undefined {
+  return jamAlbums.find((album) => album.tracks.some((track) => track.id === trackId));
+}
