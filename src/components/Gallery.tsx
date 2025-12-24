@@ -9,11 +9,8 @@ import klacno1991 from "@/assets/klacno-1991.jpg";
 import povazskaBystrica from "@/assets/povazska-bystrica.jpg";
 
 // Import Prerov concert photos
-import prerov01 from "@/assets/prerov-01.jpg";
 import prerov02 from "@/assets/prerov-02.jpg";
 import prerov03 from "@/assets/prerov-03.jpg";
-import prerov04 from "@/assets/prerov-04.jpg";
-import prerov05 from "@/assets/prerov-05.jpg";
 import prerov06 from "@/assets/prerov-06.jpg";
 import prerov07 from "@/assets/prerov-07.jpg";
 
@@ -25,11 +22,9 @@ import myjava04 from "@/assets/myjava-04.jpg";
 import myjava05 from "@/assets/myjava-05.jpg";
 import myjava06 from "@/assets/myjava-06.jpg";
 import myjava07 from "@/assets/myjava-07.jpg";
-import myjava08 from "@/assets/myjava-08.jpg";
 import myjava09 from "@/assets/myjava-09.jpg";
 import myjava10 from "@/assets/myjava-10.jpg";
 import myjava11 from "@/assets/myjava-11.jpg";
-import myjava12 from "@/assets/myjava-12.jpg";
 import myjava13 from "@/assets/myjava-13.jpg";
 import myjava14 from "@/assets/myjava-14.jpg";
 import myjava15 from "@/assets/myjava-15.jpg";
@@ -78,11 +73,8 @@ const galleryData: Record<GalleryCategory, GalleryItem[]> = {
     { id: "pod-mostom", src: podMostom, alt: "Pod Mostom / Under The Bridge", caption: "Pod Mostom / Under The Bridge" },
     { id: "klacno-1991", src: klacno1991, alt: "Klačno 1991", caption: "Čierni Spolu / Black Together" },
     { id: "povazska-bystrica", src: povazskaBystrica, alt: "Považská Bystrica", caption: "Považská Bystrica" },
-    { id: "prerov-1", src: prerov01, alt: "Prerov koncert 1", caption: "Prerov" },
     { id: "prerov-2", src: prerov02, alt: "Prerov koncert 2", caption: "Prerov" },
     { id: "prerov-3", src: prerov03, alt: "Prerov koncert 3", caption: "Prerov" },
-    { id: "prerov-4", src: prerov04, alt: "Prerov koncert 4", caption: "Prerov" },
-    { id: "prerov-5", src: prerov05, alt: "Prerov koncert 5", caption: "Prerov" },
     { id: "prerov-6", src: prerov06, alt: "Prerov koncert 6", caption: "Prerov" },
     { id: "prerov-7", src: prerov07, alt: "Prerov koncert 7", caption: "Prerov" },
     { id: "photo-1", src: myjava01, alt: "Myjava koncert 1", caption: "Myjava" },
@@ -92,11 +84,9 @@ const galleryData: Record<GalleryCategory, GalleryItem[]> = {
     { id: "photo-5", src: myjava05, alt: "Myjava koncert 5", caption: "Myjava" },
     { id: "photo-6", src: myjava06, alt: "Myjava koncert 6", caption: "Myjava" },
     { id: "photo-7", src: myjava07, alt: "Myjava koncert 7", caption: "Myjava" },
-    { id: "photo-8", src: myjava08, alt: "Myjava koncert 8", caption: "Myjava" },
     { id: "photo-9", src: myjava09, alt: "Myjava koncert 9", caption: "Myjava" },
     { id: "photo-10", src: myjava10, alt: "Myjava koncert 10", caption: "Myjava" },
     { id: "photo-11", src: myjava11, alt: "Myjava koncert 11", caption: "Myjava" },
-    { id: "photo-12", src: myjava12, alt: "Myjava koncert 12", caption: "Myjava" },
     { id: "photo-13", src: myjava13, alt: "Myjava koncert 13", caption: "Myjava" },
     { id: "photo-14", src: myjava14, alt: "Myjava koncert 14", caption: "Myjava" },
     { id: "photo-15", src: myjava15, alt: "Myjava koncert 15", caption: "Myjava" },
