@@ -1,6 +1,6 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { X, Camera, FileImage, Folder, Shuffle, Image } from "lucide-react";
+import { X, Camera, FileImage, Folder, Shuffle, Image, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import other concert photos
@@ -157,6 +157,46 @@ export function Gallery() {
 
   const categories: GalleryCategory[] = ["photos", "posters", "other"];
 
+  // Get current image index in shuffledItems
+  const currentIndex = selectedImage 
+    ? shuffledItems.findIndex(item => item.id === selectedImage.id) 
+    : -1;
+
+  // Navigation functions
+  const goToNext = useCallback(() => {
+    if (currentIndex >= 0 && currentIndex < shuffledItems.length - 1) {
+      setSelectedImage(shuffledItems[currentIndex + 1]);
+    } else if (currentIndex === shuffledItems.length - 1) {
+      setSelectedImage(shuffledItems[0]); // Loop to first
+    }
+  }, [currentIndex, shuffledItems]);
+
+  const goToPrev = useCallback(() => {
+    if (currentIndex > 0) {
+      setSelectedImage(shuffledItems[currentIndex - 1]);
+    } else if (currentIndex === 0) {
+      setSelectedImage(shuffledItems[shuffledItems.length - 1]); // Loop to last
+    }
+  }, [currentIndex, shuffledItems]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        goToNext();
+      } else if (e.key === "ArrowLeft") {
+        goToPrev();
+      } else if (e.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImage, goToNext, goToPrev]);
+
   // Handle category change
   const handleCategoryChange = useCallback((category: GalleryCategory) => {
     setActiveCategory(category);
@@ -233,9 +273,9 @@ export function Gallery() {
           </button>
         </div>
 
-        {/* Gallery Grid */}
+        {/* Gallery Grid - Always 3 columns */}
         <LayoutGroup>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-2 md:gap-4">
             <AnimatePresence mode="popLayout">
               {shuffledItems.map((item) => (
                 <motion.button
@@ -281,12 +321,12 @@ export function Gallery() {
                   />
 
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                  <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 md:p-4">
                     <div className="text-left">
-                      <p className="font-mono text-xs text-primary uppercase tracking-wider">
+                      <p className="font-mono text-[10px] md:text-xs text-primary uppercase tracking-wider">
                         {item.caption}
                       </p>
-                      <p className="font-mono text-xs text-muted-foreground mt-1">
+                      <p className="font-mono text-[10px] md:text-xs text-muted-foreground mt-1 hidden md:block">
                         {item.alt}
                       </p>
                     </div>
@@ -294,11 +334,11 @@ export function Gallery() {
 
                   {/* Corner Accent */}
                   <div 
-                    className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-0 right-0 w-4 md:w-8 h-4 md:h-8 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
                     aria-hidden="true"
                   />
                   <div 
-                    className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute bottom-0 left-0 w-4 md:w-8 h-4 md:h-8 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity"
                     aria-hidden="true"
                   />
                 </motion.button>
@@ -321,41 +361,69 @@ export function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-          <button
-            onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 p-2 text-foreground hover:text-primary transition-colors"
-            aria-label="Close lightbox"
-          >
-            <X size={32} />
-          </button>
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 p-2 text-foreground hover:text-primary transition-colors z-10"
+              aria-label="Close lightbox"
+            >
+              <X size={32} />
+            </button>
 
-          <motion.div 
-            className="max-w-4xl w-full border-2 border-border bg-card p-4"
-            onClick={(e) => e.stopPropagation()}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          >
-            <img 
-              src={selectedImage.src} 
-              alt={selectedImage.alt}
-              className="w-full max-h-[70vh] object-contain mb-4"
-            />
+            {/* Previous Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                goToPrev();
+              }}
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 md:p-3 bg-background/80 border-2 border-border text-foreground hover:border-primary hover:text-primary transition-colors z-10"
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={24} className="md:w-8 md:h-8" />
+            </button>
 
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="font-heading text-foreground">{selectedImage.alt}</p>
-                {selectedImage.caption && (
-                  <p className="font-mono text-xs text-primary uppercase tracking-wider mt-1">
-                    {selectedImage.caption}
-                  </p>
-                )}
+            {/* Next Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                goToNext();
+              }}
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 md:p-3 bg-background/80 border-2 border-border text-foreground hover:border-primary hover:text-primary transition-colors z-10"
+              aria-label="Next image"
+            >
+              <ChevronRight size={24} className="md:w-8 md:h-8" />
+            </button>
+
+            <motion.div 
+              className="max-w-4xl w-full border-2 border-border bg-card p-4"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <img 
+                src={selectedImage.src} 
+                alt={selectedImage.alt}
+                className="w-full max-h-[70vh] object-contain mb-4"
+              />
+
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-heading text-foreground">{selectedImage.alt}</p>
+                  {selectedImage.caption && (
+                    <p className="font-mono text-xs text-primary uppercase tracking-wider mt-1">
+                      {selectedImage.caption}
+                    </p>
+                  )}
+                </div>
+                <p className="font-mono text-xs text-muted-foreground">
+                  {currentIndex + 1} / {shuffledItems.length}
+                </p>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
       </AnimatePresence>
     </section>
   );
