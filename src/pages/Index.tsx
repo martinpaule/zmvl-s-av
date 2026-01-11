@@ -4,7 +4,6 @@ import { About } from "@/components/About";
 import { Listen } from "@/components/Listen";
 import { Gallery } from "@/components/Gallery";
 import { Footer } from "@/components/Footer";
-import { MusicProvider } from "@/contexts/MusicContext";
 import { VisualizerProvider } from "@/contexts/VisualizerContext";
 import { Helmet } from "react-helmet-async";
 import { bandInfo } from "@/data/bandInfo";
@@ -26,20 +25,18 @@ const Index = () => {
         <link rel="canonical" href="https://zmvl.sk" />
       </Helmet>
 
-      <MusicProvider>
-        <VisualizerProvider>
-          <div className="min-h-screen bg-background">
-            <Navigation />
-            <main>
-              <Hero />
-              <About />
-              <Listen />
-              <Gallery />
-            </main>
-            <Footer />
-          </div>
-        </VisualizerProvider>
-      </MusicProvider>
+      <VisualizerProvider>
+        <div className="min-h-screen bg-background">
+          <Navigation />
+          <main>
+            <Hero />
+            <About />
+            <Listen />
+            <Gallery />
+          </main>
+          <Footer />
+        </div>
+      </VisualizerProvider>
     </>
   );
 };
